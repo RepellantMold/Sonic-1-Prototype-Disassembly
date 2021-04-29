@@ -4687,7 +4687,7 @@ loc_3EA8:
 loc_3EB2:
                 move.l  d0,(a1)+
                 dbf     d1,loc_3EB2
-                move.w  #$27,d1 ; '''
+                move.w  #$27,d1 
                 move.w  ($FFFFF710).w,d0
                 neg.w   d0
 
@@ -4701,12 +4701,12 @@ loc_3EC2:
                 sub.w   d0,d2
                 ext.l   d2
                 asl.l   #8,d2
-                divs.w  #$68,d2 ; 'h'
+                divs.w  #$68,d2 
                 ext.l   d2
                 asl.l   #8,d2
                 moveq   #0,d3
                 move.w  d0,d3
-                move.w  #$47,d1 ; 'G'
+                move.w  #$47,d1 
                 add.w   d4,d1
 
 loc_3EF0:
@@ -5040,7 +5040,7 @@ loc_418C:
 ; ---------------------------------------------------------------------------
 
 loc_4192:
-                cmpi.w  #$60,($FFFFF73E).w ; '`'
+                cmpi.w  #$60,($FFFFF73E).w 
                 bne.s   loc_41AC
                 move.w  #$600,d1
                 cmpi.w  #6,d0
@@ -6432,7 +6432,7 @@ Obj02_Index:    dc.w Obj02_Init-*
 Obj02_Init:
                 addq.b  #2,$24(a0)
                 move.w  #$200,8(a0)
-                move.w  #$60,$C(a0) ; '`'
+                move.w  #$60,$C(a0) 
                 move.l  #Map_Obj02,4(a0)
                 move.w  #$64F0,2(a0)
                 move.b  #4,1(a0)
@@ -7930,7 +7930,7 @@ ObjRollingBall_Return:
 
 sub_5CEE:
 
-                move.w  #$23,d1 ; '#'
+                move.w  #$23,d1 
                 move.w  #$18,d2
                 move.w  #$18,d3
                 move.w  8(a0),d4
@@ -7959,7 +7959,7 @@ ObjRollingBall_Main:
                 bsr.w   sub_5DC8
                 bsr.w   sub_5E50
                 bsr.w   ObjectMove
-                move.w  #$23,d1 ; '#'
+                move.w  #$23,d1 
                 move.w  #$18,d2
                 move.w  #$18,d3
                 move.w  8(a0),d4
@@ -7983,7 +7983,7 @@ loc_5D7E:
 loc_5D86:
                 bsr.w   sub_5DC8
                 bsr.w   ObjectMove
-                move.w  #$23,d1 ; '#'
+                move.w  #$23,d1 
                 move.w  #$18,d2
                 move.w  #$18,d3
                 move.w  8(a0),d4
@@ -7992,7 +7992,7 @@ loc_5D86:
                 btst    #1,$22(a0)
                 beq.s   loc_5DBE
                 move.w  $12(a0),d0
-                addi.w  #$28,d0 ; '('
+                addi.w  #$28,d0 
                 move.w  d0,$12(a0)
                 bra.s   loc_5DC0
 ; ---------------------------------------------------------------------------
@@ -8124,7 +8124,7 @@ ObjGHZCliff_Init:
                 ori.b   #4,1(a0)
                 move.b  #4,$19(a0)
                 move.b  #7,$38(a0)
-                move.b  #$64,$18(a0) ; 'd'
+                move.b  #$64,$18(a0) 
                 move.b  $28(a0),$1A(a0)
 
 ObjGHZCliff_Main:
@@ -8236,7 +8236,7 @@ loc_6022:
                 ori.b   #4,1(a0)
                 move.b  #4,$19(a0)
                 move.b  #7,$38(a0)
-                move.b  #$44,$18(a0) ; 'D'
+                move.b  #$44,$18(a0) 
 
 entry_603a:
                 tst.b   $3A(a0)
@@ -9201,7 +9201,7 @@ loc_701C:
 
 loc_7032:
                 subq.b  #2,$25(a0)
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.w  #0,$10(a0)
                 move.b  #0,$1C(a0)
                 tst.b   1(a0)
@@ -9239,7 +9239,7 @@ ObjBallHogBall_Index:dc.w ObjBallHogBall_Init-*
 
 ObjBallHogBall_Init:
                 addq.b  #2,$24(a0)
-                move.l  #unk_729A,4(a0)
+                move.l  #Map_BallhogBall,4(a0)
                 move.w  #$2418,2(a0)
                 move.b  #4,1(a0)
                 move.b  #3,$19(a0)
@@ -9333,7 +9333,7 @@ entry_7178:
                 addq.b  #2,$24(a0)
                 bsr.w   FindFreeObjectSlot
                 bne.s   entry_7194
-                move.b  #$28,0(a1) ; '('
+                move.b  #$28,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
 
@@ -9410,14 +9410,7 @@ unk_7244:       dc.b   0
 
 Map_BallHog:    include "Map/Ballhog.asm"
 
-unk_729A:       dc.b   0
-                dc.b   2
-                dc.b   1
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $F8
+Map_BallhogBall:       include "Map/BallhogBall.asm"
 
 unk_72A2:       dc.b   0
                 dc.b   8
@@ -9619,7 +9612,7 @@ loc_73C6:
                 bne.s   loc_7438
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_7414
-                move.b  #$29,0(a1) ; ')'
+                move.b  #$29,0(a1)
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
 
@@ -9848,7 +9841,7 @@ ObjCrabmeat_Index:dc.w ObjCrabmeat_Init-ObjCrabmeat_Index
 ObjCrabmeat_Init:
                 move.b  #$10,$16(a0)
                 move.b  #8,$17(a0)
-                move.l  #unk_780A,4(a0)
+                move.l  #Map_Crabmeat,4(a0)
                 move.w  #$400,2(a0)
                 move.b  #4,1(a0)
                 move.b  #3,$19(a0)
@@ -9904,7 +9897,7 @@ locret_7670:
 ; ---------------------------------------------------------------------------
 
 loc_7672:
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.b  #6,$1C(a0)
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_76A8
@@ -9962,7 +9955,7 @@ loc_770E:
 
 loc_7728:
                 subq.b  #2,$25(a0)
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.w  #0,$10(a0)
                 bsr.w   sub_7742
                 move.b  d0,$1C(a0)
@@ -10007,7 +10000,7 @@ entry_7772:
 
 entry_7778:
                 addq.b  #2,$24(a0)
-                move.l  #$780A,4(a0)
+                move.l  #Map_Crabmeat,4(a0)
                 move.w  #$400,2(a0)
                 move.b  #4,1(a0)
                 move.b  #3,$19(a0)
@@ -10033,7 +10026,7 @@ loc_77D0:
 ; ---------------------------------------------------------------------------
 Ani_Crabmeat:   include "Ani/Crabmeat.asm"
 
-unk_780A:       include "Map/Crabmeat.asm"
+Map_Crabmeat:   include "Map/Crabmeat.asm"
 
 ; ---------------------------------------------------------------------------
 
@@ -10090,7 +10083,7 @@ locret_7926:
 loc_7928:
                 bsr.w   FindFreeObjectSlot
                 bne.s   locret_798A
-                move.b  #$23,0(a1) ; '#'
+                move.b  #$23,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
                 addi.w  #$1C,$C(a1)
@@ -10108,7 +10101,7 @@ loc_7964:
                 move.w  #$E,$32(a1)
                 move.l  a0,$3C(a1)
                 move.b  #1,$34(a0)
-                move.w  #$3B,$32(a0) ; ';'
+                move.w  #$3B,$32(a0) 
                 move.b  #2,$1C(a0)
 
 locret_798A:
@@ -10127,7 +10120,7 @@ entry_798c:
                 neg.w   d0
 
 loc_79A8:
-                cmpi.w  #$60,d0 ; '`'
+                cmpi.w  #$60,d0 
                 bcc.s   locret_79E4
                 tst.b   1(a0)
                 bpl.s   locret_79E4
@@ -10139,7 +10132,7 @@ loc_79A8:
 loc_79C2:
                 move.b  #0,$34(a0)
                 bchg    #0,$22(a0)
-                move.w  #$3B,$32(a0) ; ';'
+                move.w  #$3B,$32(a0) 
 
 loc_79D4:
                 subq.b  #2,$25(a0)
@@ -10202,7 +10195,7 @@ entry_7a4e:
 sub_7A5E:
 
                 movea.l $3C(a0),a1
-                cmpi.b  #$27,0(a1) ; '''
+                cmpi.b  #$27,0(a1) 
                 beq.s   entry_7ab2
                 rts
 ; ---------------------------------------------------------------------------
@@ -10317,7 +10310,7 @@ loc_7C64:
                 bne.s   loc_7CC8
 
 loc_7C74:
-                move.b  #$25,0(a1) ; '%'
+                move.b  #$25,0(a1) 
                 addq.b  #2,$24(a1)
                 move.w  d2,8(a1)
                 move.w  8(a0),$32(a1)
@@ -10326,7 +10319,7 @@ loc_7C74:
                 move.w  #$27B2,2(a1)
                 move.b  #4,1(a1)
                 move.b  #2,$19(a1)
-                move.b  #$47,$20(a1) ; 'G'
+                move.b  #$47,$20(a1) 
                 move.b  #8,$18(a1)
                 move.b  $23(a0),$23(a1)
                 move.b  d1,$34(a1)
@@ -10387,7 +10380,7 @@ sub_7D30:
                 bcs.s   loc_7D6A
                 bset    #0,($FFFFFE1B).w
                 beq.s   loc_7D5E
-                cmpi.w  #$64,($FFFFFE20).w ; 'd'
+                cmpi.w  #$64,($FFFFFE20).w 
                 bcs.s   loc_7D6A
                 bset    #1,($FFFFFE1B).w
                 bne.s   loc_7D6A
@@ -10440,7 +10433,7 @@ loc_7DA0:
                 bne.w   loc_7E2C
 
 loc_7DA8:
-                move.b  #$37,0(a1) ; '7'
+                move.b  #$37,0(a1) 
                 addq.b  #2,$24(a1)
                 move.b  #8,$16(a1)
                 move.b  #8,$17(a1)
@@ -10450,7 +10443,7 @@ loc_7DA8:
                 move.w  #$27B2,2(a1)
                 move.b  #4,1(a1)
                 move.b  #2,$19(a1)
-                move.b  #$47,$20(a1) ; 'G'
+                move.b  #$47,$20(a1)
                 move.b  #8,$18(a1)
                 move.b  #$FF,($FFFFFEC6).w
                 tst.w   d4
@@ -10550,7 +10543,7 @@ ObjBigRing_Init:
                 move.w  #$24EC,2(a0)
                 move.b  #4,1(a0)
                 move.b  #2,$19(a0)
-                move.b  #$52,$20(a0) ; 'R'
+                move.b  #$52,$20(a0)
                 move.b  #$C,$18(a0)
 
 ObjBigRing_Display:
@@ -10730,7 +10723,7 @@ entry_81d2:
                 move.b  #0,$20(a0)
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_81FA
-                move.b  #$2E,0(a1) ; '.'
+                move.b  #$2E,0(a1)
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
                 move.b  $1C(a0),$1C(a1)
@@ -10738,7 +10731,7 @@ entry_81d2:
 loc_81FA:
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_8216
-                move.b  #$27,0(a1) ; '''
+                move.b  #$27,0(a1) 
                 addq.b  #2,$24(a1)
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
@@ -10856,7 +10849,7 @@ Obj2E_Rings:
                 bcs.s   @PlayRingSound
                 bset    #0,($FFFFFE1B).w
                 beq.w   AddLife
-                cmpi.w  #$64,($FFFFFE20).w ; 'd'
+                cmpi.w  #$64,($FFFFFE20).w 
                 bcs.s   @PlayRingSound
                 bset    #1,($FFFFFE1B).w
                 beq.w   AddLife
@@ -11203,7 +11196,7 @@ Obj_Index:      dc.l Obj01			; Sonic
                 dc.l Obj3B                      ; Green Hill Zone Purple Rock
                 dc.l Obj3C
                 dc.l Obj3D                      ; Green Hill Zone Boss
-                dc.l Obj3E                      ; Capsule
+                dc.l Obj3E                      ; Animal Capsule
                 dc.l Obj3F
                 dc.l ObjMotobug
                 dc.l ObjSprings
@@ -11686,7 +11679,7 @@ code_8A00:
                 move.l  a1,($FFFFF77C).w
                 lea     ($FFFFFC00).w,a2
                 move.w  #$101,(a2)+
-                move.w  #$5E,d0 ; '^'
+                move.w  #$5E,d0
 
 OPL_ClrList:
                 clr.l   (a2)+
@@ -11853,7 +11846,7 @@ locret_8B70:
 
 FindFreeObjectSlot:
                 lea     ($FFFFD800).w,a1
-                move.w  #$5F,d0 ; '_'
+                move.w  #$5F,d0 
 
 loc_8B7A:
                 tst.b   (a1)
@@ -12068,7 +12061,7 @@ loc_8DDE:
                 btst    #2,($FFFFFE0F).w
                 beq.s   loc_8DFE
                 subq.b  #2,$25(a0)
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.w  #0,$10(a0)
                 move.b  #0,$1C(a0)
                 rts
@@ -12235,7 +12228,7 @@ entry_8fdc:
 
 entry_8fe6:
                 move.b  ($FFFFFE6C).w,d0
-                move.w  #$60,d1 ; '`'
+                move.w  #$60,d1 
 
 loc_8FEE:
                 btst    #3,$28(a0)
@@ -12568,7 +12561,7 @@ loc_9486:
 
 entry_9498:
                 bsr.w   sub_9514
-                move.w  #$2B,d1 ; '+'
+                move.w  #$2B,d1 
                 move.w  #$24,d2 
                 move.w  #$24,d3 
                 move.w  8(a0),d4
@@ -12579,7 +12572,7 @@ entry_94b0:
                 movea.l $3C(a0),a1
                 move.w  $32(a1),$32(a0)
                 bsr.w   sub_9514
-                move.w  #$2B,d1 ; '+'
+                move.w  #$2B,d1 
                 move.w  #$24,d2
                 bra.w   sub_6936
 ; ---------------------------------------------------------------------------
@@ -12592,7 +12585,7 @@ entry_94ca:
 
 entry_94d8:
                 bsr.w   sub_9514
-                move.w  #$2B,d1 ; '+'
+                move.w  #$2B,d1 
                 move.w  #$38,d2 
                 move.w  #$38,d3 
                 move.w  8(a0),d4
@@ -13388,7 +13381,7 @@ sub_9E58:
                 move.w  #$20,d4 
                 move.w  #$10,d5
                 lea     ($FFFFD800).w,a1
-                move.w  #$5F,d6 ; '_'
+                move.w  #$5F,d6 
 
 loc_9E76:
                 tst.b   1(a1)
@@ -13659,7 +13652,7 @@ locret_A124:
 loc_A126:
                 bsr.w   FindFreeObjectSlot
                 bne.s   locret_A14C
-                move.b  #$4C,0(a1) ; 'L'
+                move.b  #$4C,0(a1)
                 move.w  8(a0),8(a1)
                 add.w   d2,8(a1)
                 move.w  $C(a0),$C(a1)
@@ -14390,7 +14383,7 @@ loc_A702:
                 moveq   #6,d1
 
 loc_A70C:
-                move.b  #$3A,0(a1) ; ':'
+                move.b  #$3A,0(a1) 
                 move.w  (a2)+,8(a1)
                 move.w  (a2)+,$30(a1)
                 move.w  (a2)+,$A(a1)
@@ -15911,7 +15904,7 @@ entry_b1ae:
                 addq.b  #2,$25(a0)
                 bsr.w   FindFreeObjectSlot2
                 bne.s   loc_B1F2
-                move.b  #$48,0(a1) ; 'H'
+                move.b  #$48,0(a1) 
                 move.w  $30(a0),8(a1)
                 move.w  $38(a0),$C(a1)
                 move.l  a0,$34(a1)
@@ -16071,7 +16064,7 @@ loc_B376:
                 bne.s   loc_B3D6
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
-                move.b  #$48,0(a1) ; 'H'
+                move.b  #$48,0(a1)
                 move.b  #6,$24(a1)
                 move.l  #Map_Obj15,4(a1)
                 move.w  #$380,2(a1)
@@ -16481,7 +16474,7 @@ byte_B67C:      dc.b 2, $20, 4, 0
 ; ---------------------------------------------------------------------------
 
 entry_b68c:
-                move.l  #$B812,4(a0)
+                move.l  #Map_Capsule,4(a0)
                 move.w  #$49D,2(a0)
                 move.b  #4,1(a0)
                 move.w  $C(a0),$30(a0)
@@ -16505,7 +16498,7 @@ locret_B6D4:
 entry_b6d6:
                 cmpi.b  #2,($FFFFF7A7).w
                 beq.s   loc_B6F2
-                move.w  #$2B,d1 ; '+'
+                move.w  #$2B,d1 
                 move.w  #$18,d2
                 move.w  #$18,d3
                 move.w  8(a0),d4
@@ -16586,7 +16579,7 @@ entry_b7c6:
                 bne.s   loc_B7E8
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_B7E8
-                move.b  #$28,0(a1) ; '('
+                move.b  #$28,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
 
@@ -16610,6 +16603,8 @@ entry_b7fa:
 locret_B808:
                 rts
 ; ---------------------------------------------------------------------------
+Map_Capsule:    include "Map/Capsule.asm"
+
 unk_B80A:       dc.b   0
                 dc.b   4
                 dc.b   0
@@ -16848,7 +16843,7 @@ locret_B9BE:
 
 loc_B9C0:
                 subq.b  #2,$25(a0)
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.w  #0,$10(a0)
                 move.b  #0,$1C(a0)
                 rts
@@ -17257,7 +17252,7 @@ loc_BE6C:
                 move.b  #1,$32(a0)
                 bsr.w   FindFreeObjectSlot
                 bne.s   locret_BEC4
-                move.b  #$23,0(a1) ; '#'
+                move.b  #$23,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
                 subq.w  #8,$C(a1)
@@ -17486,7 +17481,7 @@ entry_C110:
 
 entry_c148:
                 move.w  #$13,d1
-                move.w  #$28,d2 ; '('
+                move.w  #$28,d2 
                 bsr.w   sub_6936
 
 entry_c154:
@@ -18132,7 +18127,7 @@ Obj0D_Sparkle:
                 lea     Obj0D_SparkPos(pc,d0.w),a2
                 bsr.w   FindFreeObjectSlot
                 bne.s   locret_C802
-                move.b  #$25,0(a1) ; '%'
+                move.b  #$25,0(a1)
                 move.b  #6,$24(a1)
                 move.b  (a2)+,d0
                 ext.w   d0
@@ -18174,7 +18169,7 @@ sub_C81C:
                 move.w  ($FFFFF72A).w,($FFFFF728).w
                 clr.b   ($FFFFFE2D).w
                 clr.b   ($FFFFFE1E).w
-                move.b  #$3A,($FFFFD600).w ; ':'
+                move.b  #$3A,($FFFFD600).w
                 moveq   #$10,d0
                 jsr     (LoadPLC2).l
                 move.b  #1,($FFFFFE58).w
@@ -18281,7 +18276,7 @@ entry_c932:
                 move.b  #4,1(a0)
                 move.b  #1,$19(a0)
                 move.b  #$38,$18(a0) 
-                move.w  #$78,$34(a0) ; 'x'
+                move.w  #$78,$34(a0) 
 
 entry_c95c:
                 subq.w  #1,$32(a0)
@@ -18304,7 +18299,7 @@ entry_c982:
                 addq.b  #2,$24(a0)
                 bsr.w   FindFreeObjectSlot2
                 bne.s   loc_C9A8
-                move.b  #$4D,0(a1) ; 'M'
+                move.b  #$4D,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
                 move.b  $28(a0),$28(a1)
@@ -18396,7 +18391,7 @@ sub_CA4A:
 
 
 sub_CA50:
-                move.b  #$4D,0(a1) ; 'M'
+                move.b  #$4D,0(a1)
                 move.l  #unk_CE24,4(a1)
                 move.w  #$63A8,2(a1)
                 move.b  #4,1(a1)
@@ -18418,9 +18413,9 @@ loc_CA9A:
 ; ---------------------------------------------------------------------------
 
 loc_CAA0:
-                addi.w  #$60,$C(a1) ; '`'
+                addi.w  #$60,$C(a1) 
                 move.w  $30(a0),$30(a1)
-                addi.w  #$60,$30(a1) ; '`'
+                addi.w  #$60,$30(a1) 
                 move.b  #$93,$20(a1)
                 move.b  #$80,$16(a1)
                 bset    #4,1(a1)
@@ -18498,7 +18493,7 @@ entry_cb8c:
                 cmpi.b  #6,$24(a1)
                 beq.w   entry_cbea
                 move.w  $C(a1),d0
-                addi.w  #$60,d0 ; '`'
+                addi.w  #$60,d0 
                 move.w  d0,$C(a0)
                 sub.w   $30(a0),d0
                 neg.w   d0
@@ -18557,7 +18552,7 @@ loc_CC10:
                 bne.s   loc_CC58
 
 loc_CC16:
-                move.b  #$4E,0(a1) ; 'N'
+                move.b  #$4E,0(a1) 
                 move.l  #unk_D108,4(a1)
                 move.w  #$63A8,2(a1)
                 move.b  #4,1(a1)
@@ -18589,7 +18584,7 @@ loc_CC72:
                 neg.w   d0
 
 loc_CC84:
-                cmpi.w  #$60,d0 ; '`'
+                cmpi.w  #$60,d0 
                 bcc.s   loc_CC92
                 move.b  #1,$36(a0)
                 bra.s   entry_cca2
@@ -19022,7 +19017,7 @@ ObjYadrin_Floor:
 
 ObjYadrin_Stop:
                 subq.b  #2,$25(a0)
-                move.w  #$3B,$30(a0) ; ';'
+                move.w  #$3B,$30(a0) 
                 move.w  #0,$10(a0)
                 move.b  #0,$1C(a0)
                 rts
@@ -19230,7 +19225,7 @@ entry_D690:
 
 entry_d692:
                 move.b  ($FFFFFE6C).w,d0
-                subi.b  #$60,d1 ; '`'
+                subi.b  #$60,d1 
                 btst    #0,$22(a0)
                 beq.s   loc_D6A6
                 neg.w   d0
@@ -19999,7 +19994,7 @@ entry_DEBE:
 ; ---------------------------------------------------------------------------
 
 entry_dec0:
-                move.w  #$60,d1 ; '`'
+                move.w  #$60,d1 
                 moveq   #0,d0
                 move.b  ($FFFFFE6C).w,d0
                 btst    #0,$22(a0)
@@ -20015,7 +20010,7 @@ loc_DED6:
 ; ---------------------------------------------------------------------------
 
 entry_dee2:
-                move.w  #$60,d1 ; '`'
+                move.w  #$60,d1 
                 moveq   #0,d0
                 move.b  ($FFFFFE6C).w,d0
                 btst    #0,$22(a0)
@@ -20486,7 +20481,7 @@ entry_e194:
                 move.w  $3E(a0),$3C(a0)
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_E1BE
-                move.b  #$59,0(a1) ; 'Y'
+                move.b  #$59,0(a1)
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
                 move.b  #$E,$28(a1)
@@ -20678,7 +20673,7 @@ word_E358:      dc.w 6
                 moveq   #1,d4
                 btst    #0,$22(a0)
                 beq.s   loc_E372
-                moveq   #$3B,d3 ; ';'
+                moveq   #$3B,d3
                 moveq   #$FFFFFFFF,d4
 
 loc_E372:
@@ -20694,7 +20689,7 @@ loc_E37C:
                 move.b  #4,$24(a1)
 
 loc_E38A:
-                move.b  #$5B,0(a1) ; '['
+                move.b  #$5B,0(a1)
                 move.l  #unk_E4D4,4(a1)
                 move.w  #$4480,2(a1)
                 move.b  #4,1(a1)
@@ -20939,7 +20934,7 @@ entry_e594:
                 bne.s   loc_E5B6
                 subq.w  #1,$30(a0)
                 bpl.s   loc_E5B6
-                move.w  #$78,$30(a0) ; 'x'
+                move.w  #$78,$30(a0) 
                 bchg    #0,$32(a0)
                 beq.s   loc_E5B6
                 move.w  #$B4,$30(a0)
@@ -20959,7 +20954,7 @@ loc_E5D4:
                 cmpi.w  #$F0,d0
                 bcc.s   loc_E61C
                 move.w  $C(a1),d1
-                addi.w  #$60,d1 ; '`'
+                addi.w  #$60,d1 
                 sub.w   $C(a0),d1
                 bcs.s   loc_E61C
                 cmpi.w  #$70,d1 
@@ -20970,7 +20965,7 @@ loc_E5D4:
                 add.w   d0,d0
 
 loc_E5FC:
-                addi.w  #$60,d0 ; '`'
+                addi.w  #$60,d0 
                 btst    #0,$22(a0)
                 bne.s   loc_E60A
                 neg.w   d0
@@ -21606,7 +21601,7 @@ loc_EABC:
 ; ---------------------------------------------------------------------------
 
 loc_EAD8:
-                cmpi.w  #$60,($FFFFF73E).w ; '`'
+                cmpi.w  #$60,($FFFFF73E).w 
                 beq.s   loc_EAEA
                 bcc.s   loc_EAE6
                 addq.w  #4,($FFFFF73E).w
@@ -21936,7 +21931,7 @@ loc_ED84:
                 move.w  d0,$10(a0)
 
 loc_ED88:
-                cmpi.w  #$60,($FFFFF73E).w ; '`'
+                cmpi.w  #$60,($FFFFF73E).w 
                 beq.s   loc_ED9A
                 bcc.s   loc_ED96
                 addq.w  #4,($FFFFF73E).w
@@ -22173,7 +22168,7 @@ locret_EF86:
 
 Sonic_SlopeResist:
                 move.b  $26(a0),d0
-                addi.b  #$60,d0 ; '`'
+                addi.b  #$60,d0 
                 cmpi.b  #$C0,d0
                 bcc.s   locret_EFBC
                 move.b  $26(a0),d0
@@ -22204,7 +22199,7 @@ locret_EFBC:
 
 sub_EFBE:
                 move.b  $26(a0),d0
-                addi.b  #$60,d0 ; '`'
+                addi.b  #$60,d0
                 cmpi.b  #$C0,d0
                 bcc.s   locret_EFF8
                 move.b  $26(a0),d0
@@ -22614,7 +22609,7 @@ sub_F2DE:
                 move.w  d0,$14(a0)
                 move.b  #0,$1C(a0)
                 subq.b  #2,$24(a0)
-                move.w  #$78,$30(a0) ; 'x'
+                move.w  #$78,$30(a0) 
 
 locret_F318:
                 rts
@@ -22782,7 +22777,7 @@ loc_F438:
 ; ---------------------------------------------------------------------------
 
 loc_F448:
-                cmpi.b  #$2C,d2 ; ','
+                cmpi.b  #$2C,d2
                 bcc.s   loc_F456
                 bclr    #6,1(a0)
                 rts
@@ -23171,7 +23166,7 @@ loc_F856:
                 move.b  #1,$19(a0)
                 move.b  #$38,$18(a0) 
                 move.w  #$541,2(a0)
-                move.w  #$78,$30(a0) ; 'x'
+                move.w  #$78,$30(a0)
 
 entry_f880:
                 move.w  ($FFFFD008).w,8(a0)
@@ -23849,7 +23844,7 @@ sub_FB4A:
                 move.w  #$10,d4
                 add.w   d5,d5
                 lea     ($FFFFD800).w,a1
-                move.w  #$5F,d6 ; '_'
+                move.w  #$5F,d6
 
 loc_FB6E:
                 tst.b   1(a1)
@@ -23966,7 +23961,7 @@ loc_FBF6:
                 andi.b  #$3F,d0 
                 cmpi.b  #6,d0
                 beq.s   loc_FC2E
-                cmpi.w  #$5A,$30(a0) ; 'Z'
+                cmpi.w  #$5A,$30(a0)
                 bcc.w   locret_FC2C
                 addq.b  #2,$24(a1)
 
@@ -24025,7 +24020,7 @@ loc_FCA2:
                 bset    #7,$22(a1)
                 moveq   #$A,d0
                 bsr.w   sub_1164E
-                move.b  #$27,0(a1) ; '''
+                move.b  #$27,0(a1) 
                 move.b  #0,$24(a1)
                 tst.w   $12(a0)
                 bmi.s   loc_FCD0
@@ -24068,7 +24063,7 @@ loc_FCF4:
                 beq.s   loc_FD72
                 bsr.w   FindFreeObjectSlot
                 bne.s   loc_FD18
-                move.b  #$37,0(a1) ; '7'
+                move.b  #$37,0(a1) 
                 move.w  8(a0),8(a1)
                 move.w  $C(a0),$C(a1)
 
@@ -24089,7 +24084,7 @@ loc_FD48:
                 move.b  #$1A,$1C(a0)
                 move.w  #$258,$30(a0)
                 move.w  #$A3,d0
-                cmpi.b  #$36,(a2) ; '6'
+                cmpi.b  #$36,(a2) 
                 bne.s   loc_FD68
                 move.w  #$A6,d0
 
@@ -24115,7 +24110,7 @@ loc_FD78:
                 move.w  $C(a0),$38(a0)
                 move.b  #$18,$1C(a0)
                 move.w  #$A3,d0
-                cmpi.b  #$36,(a2) ; '6'
+                cmpi.b  #$36,(a2)
                 bne.s   loc_FDBA
                 move.w  #$A6,d0
 
@@ -25864,7 +25859,7 @@ loc_10B7A:
                 dbf     d0,loc_10B7A
                 lea     ($FF172E).l,a1
                 lea     (SS_Layout).l,a0
-                moveq   #$23,d1 ; '#'
+                moveq   #$23,d1
 
 loc_10B8E:
                 moveq   #8,d2
@@ -26318,12 +26313,12 @@ Obj09_Fall:
                 move.w  $10(a0),d4
                 ext.l   d4
                 asl.l   #8,d4
-                muls.w  #$2A,d0 ; '*'
+                muls.w  #$2A,d0 
                 add.l   d4,d0
                 move.w  $12(a0),d4
                 ext.l   d4
                 asl.l   #8,d4
-                muls.w  #$2A,d1 ; '*'
+                muls.w  #$2A,d1
                 add.l   d4,d1
                 add.l   d0,d3
                 bsr.w   sub_1100E
@@ -26377,7 +26372,7 @@ sub_1100E:
                 swap    d2
                 move.w  d2,d4
                 swap    d2
-                addi.w  #$44,d4 ; 'D'
+                addi.w  #$44,d4 
                 divu.w  #$18,d4
                 mulu.w  #$80,d4
                 adda.l  d4,a1
@@ -26393,7 +26388,7 @@ sub_1100E:
                 bsr.s   sub_11056
                 move.b  (a1)+,d4
                 bsr.s   sub_11056
-                adda.w  #$7E,a1 ; '~'
+                adda.w  #$7E,a1
                 move.b  (a1)+,d4
                 bsr.s   sub_11056
                 move.b  (a1)+,d4
@@ -26513,7 +26508,7 @@ loc_110FE:
                 lsr.w   #7,d2
                 andi.w  #$7F,d2
                 mulu.w  #$18,d2
-                subi.w  #$44,d2 ; 'D'
+                subi.w  #$44,d2
                 sub.w   8(a0),d1
                 sub.w   $C(a0),d2
                 jsr     (CalcAngle).l
@@ -28836,7 +28831,7 @@ loc_7457E:
                 subq.w  #1,d0
                 move.b  (a0,d0.w),d1
                 move.b  $A(a5),d0
-                andi.b  #$37,d0 ; '7'
+                andi.b  #$37,d0 
                 or.b    d0,d1
                 move.b  #$B4,d0
                 jsr     sub_74E44(pc)
@@ -28876,7 +28871,7 @@ loc_745E0:
                 addq.b  #1,d0
                 dbf     d2,loc_745E0
                 moveq   #2,d2
-                moveq   #$28,d0 ; '('
+                moveq   #$28,d0 
 
 loc_745F2:
                 move.b  d2,d1
@@ -29102,26 +29097,26 @@ loc_747F2:
                 dbf     d7,loc_747F2
                 cmpi.b  #7,2(a3)
                 bne.s   loc_74832
-                moveq   #$2B,d0 ; '+'
+                moveq   #$2B,d0 
                 moveq   #0,d1
                 jsr     WriteFMI(pc)
                 bra.w   loc_7486E
 ; ---------------------------------------------------------------------------
 
 loc_74832:
-                moveq   #$28,d0 ; '('
+                moveq   #$28,d0 
                 moveq   #6,d1
                 jsr     WriteFMI(pc)
-                move.b  #$42,d0 ; 'B'
+                move.b  #$42,d0
                 moveq   #$7F,d1
                 jsr     WriteFMII(pc)
-                move.b  #$4A,d0 ; 'J'
+                move.b  #$4A,d0
                 moveq   #$7F,d1
                 jsr     WriteFMII(pc)
                 move.b  #$46,d0
                 moveq   #$7F,d1
                 jsr     WriteFMII(pc)
-                move.b  #$4E,d0 ; 'N'
+                move.b  #$4E,d0
                 moveq   #$7F,d1
                 jsr     WriteFMII(pc)
                 move.b  #$B6,d0
@@ -29403,7 +29398,7 @@ locret_74AF6:
 
 sub_74B10:
                 clr.b   0(a6)
-                moveq   #$27,d0 ; '''
+                moveq   #$27,d0 
                 moveq   #0,d1
                 jsr     WriteFMI(pc)
                 lea     $220(a6),a5
@@ -29516,7 +29511,7 @@ loc_74C1E:
                 jsr     sub_74B10(pc)
                 jsr     sub_74BB4(pc)
                 move.b  #3,6(a6)
-                move.b  #$28,4(a6) ; '('
+                move.b  #$28,4(a6) 
                 clr.b   $40(a6)
                 clr.b   $2A(a6)
                 rts
@@ -29609,7 +29604,7 @@ loc_74CBC:
 
 sub_74CCA:
                 moveq   #2,d2
-                moveq   #$28,d0 ; '('
+                moveq   #$28,d0 
 
 loc_74CCE:
                 move.b  d2,d1
@@ -29639,10 +29634,10 @@ loc_74CE6:
 ;   ADDITIONAL PARENT FUNCTION DoFadeOut
 
 loc_74CFE:
-                moveq   #$2B,d0 ; '+'
+                moveq   #$2B,d0
                 move.b  #$80,d1
                 jsr     WriteFMI(pc)
-                moveq   #$27,d0 ; '''
+                moveq   #$27,d0 
                 moveq   #0,d1
                 jsr     WriteFMI(pc)
                 movea.l a6,a0
@@ -29769,7 +29764,7 @@ loc_74E10:
                 bne.s   locret_74E2A
                 btst    #2,(a5)
                 bne.s   locret_74E2A
-                moveq   #$28,d0 ; '('
+                moveq   #$28,d0 
                 move.b  1(a5),d1
                 ori.b   #$F0,d1
                 bra.w   WriteFMI
@@ -29789,7 +29784,7 @@ sub_74E2C:
                 bne.s   locret_74E42
 
 loc_74E38:
-                moveq   #$28,d0 ; '('
+                moveq   #$28,d0 
                 move.b  1(a5),d1
                 bra.w   WriteFMI
 ; ---------------------------------------------------------------------------
@@ -30210,7 +30205,7 @@ loc_7521C:
                 tst.b   1(a5)
                 bmi.s   locret_7523A
                 move.b  $A(a5),d0
-                andi.b  #$37,d0 ; '7'
+                andi.b  #$37,d0
                 or.b    d0,d1
                 move.b  d1,$A(a5)
                 move.b  #$B4,d0
@@ -30260,7 +30255,7 @@ loc_75284:
                 dbf     d0,loc_75284
                 bset    #2,$40(a6)
                 movea.l a5,a3
-                move.b  #$28,d6 ; '('
+                move.b  #$28,d6 
                 sub.b   $26(a6),d6
                 moveq   #5,d7
                 lea     $70(a6),a5
@@ -30294,7 +30289,7 @@ loc_752DE:
                 dbf     d7,loc_752CC
                 movea.l a3,a5
                 move.b  #$80,$24(a6)
-                move.b  #$28,$26(a6) ; '('
+                move.b  #$28,$26(a6)
                 clr.b   $27(a6)
                 addq.w  #8,sp
                 rts
@@ -30367,7 +30362,7 @@ loc_7537E:
                 lsl.w   #1,d3
                 dbf     d6,loc_7536C
                 move.b  (a4)+,d1
-                moveq   #$22,d0 ; '"'
+                moveq   #$22,d0
                 jsr     WriteFMI(pc)
                 move.b  (a4)+,d1
                 move.b  $A(a5),d0
@@ -30633,7 +30628,7 @@ loc_75572:
                 bne.s   loc_755C0
                 clr.b   $F(a6)
                 moveq   #0,d1
-                moveq   #$27,d0 ; '''
+                moveq   #$27,d0 
                 jsr     WriteFMI(pc)
                 bra.s   loc_755C0
 ; ---------------------------------------------------------------------------
@@ -30782,7 +30777,7 @@ loc_75692:
                 move.b  (a4)+,(a0)+
                 dbf     d0,loc_75692
                 move.b  #$80,$F(a6)
-                move.b  #$27,d0 ; '''
+                move.b  #$27,d0
                 moveq   #$40,d1
                 bra.w   WriteFMI
 ; ---------------------------------------------------------------------------
