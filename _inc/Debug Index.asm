@@ -9,7 +9,7 @@ Debug_GHZ:      dc.w $D
                 dc.b 0, 0, $27, $B2
                 dc.l Map_Monitor+$26000000
                 dc.b 0, 0, 6, $80
-                dc.l unk_780A+$1F000000
+                dc.l Map_Crabmeat+$1F000000
                 dc.b 0, 0, 4, 0
                 dc.l unk_7AF0+$22000000
                 dc.b 0, 0, 4, $44
@@ -36,7 +36,7 @@ Debug_LZ:       dc.w 3
                 dc.b 0, 0, $27, $B2
                 dc.l Map_Monitor+$26000000
                 dc.b 0, 0, 6, $80
-                dc.l unk_780A+$1F000000
+                dc.l Map_Crabmeat+$1F000000
                 dc.b 0, 0, 4, 0
 Debug_MZ:       dc.w $11
                 dc.l Map_Signpost_Sparkle+$25000000
@@ -96,7 +96,7 @@ Debug_SLZ:      dc.w $D
                 dc.b 0, 0, 5, $23
                 dc.l Map_FireBall+$13000000
                 dc.b 0, 0, 3, $45
-                dc.l unk_780A+$1F000000
+                dc.l Map_Crabmeat+$1F000000
                 dc.b 0, 0, 4, 0
                 dc.l unk_7AF0+$22000000
                 dc.b 0, 0, 4, $44
@@ -115,7 +115,7 @@ Debug_SZ:       dc.w $D
                 dc.b 0, 0, 0, 0
                 dc.l unk_C6C2+$47000000
                 dc.b 0, 0, 3, $80
-                dc.l unk_780A+$1F000000
+                dc.l Map_Crabmeat+$1F000000
                 dc.b 0, 0, 4, 0
                 dc.l unk_7AF0+$22000000
                 dc.b 0, 0, 4, $44
@@ -132,7 +132,7 @@ Debug_CWZ:      dc.w 3
                 dc.b 0, 0, $27, $B2
                 dc.l Map_Monitor+$26000000
                 dc.b 0, 0, 6, $80
-                dc.l unk_780A+$1F000000
+                dc.l Map_Crabmeat+$1F000000
                 dc.b 0, 0, 4, 0
 ;Unused
                 dc.l Map_BallHog+$1E000000
