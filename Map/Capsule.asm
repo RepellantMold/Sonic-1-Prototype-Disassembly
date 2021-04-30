@@ -1,7 +1,7 @@
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - prison capsule
 ; ---------------------------------------------------------------------------
-		dc.w byte_1AD82-Map_obj3E, byte_1ADA6-Map_obj3E
+Map_obj3E:	dc.w byte_1AD82-Map_obj3E, byte_1ADA6-Map_obj3E
 		dc.w byte_1ADAC-Map_obj3E, byte_1ADCB-Map_obj3E
 		dc.w byte_1ADD1-Map_obj3E, byte_1ADDC-Map_obj3E
 		dc.w byte_1ADE2-Map_obj3E
