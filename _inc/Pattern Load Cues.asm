@@ -218,7 +218,7 @@ SpecialStage_PLCs:dc.w $B
                 dc.w $4A20
                 dc.l Nem_SSUpDown
                 dc.w $4C60
-                dc.l byte_6505E
+                dc.l Nem_SSR
                 dc.w $5E00
                 dc.l Nem_SS1Up
                 dc.w $6E00
