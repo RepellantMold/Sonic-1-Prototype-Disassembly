@@ -4,6 +4,7 @@
 ; |                      License info: 48-3015-72F4-DD                      |
 ; |                       Octavian Dima, personal use                       |
 ; |                 File dumped by Buckaroo. Released by drx.               |
+; |                     Possible Date: March 24th, 1991.                    |
 ; |                          Dump method: Retrode 2.                        |
 ; +-------------------------------------------------------------------------+
 ;
@@ -54,7 +55,7 @@ Serial:         dc.b 'GM 00000000-00'   ; Serial/version number
 Checksum:       dc.w 0
                 dc.b 'J               ' ; I/O support
 RomStartLoc:    dc.l StartOfRom         ; ROM start
-RomEndLoc:      dc.l EndOfRom           ; ROM end
+RomEndLoc:      dc.l EndOfRom-1         ; ROM end
 RamStartLoc:    dc.l $FF0000            ; RAM start
 RamEndLoc:      dc.l $FFFFFF            ; RAM end
 SRAMSupport:    dc.l $20202020          ; change to $5241E020 to create	SRAM
@@ -81,7 +82,7 @@ loc_20C:
                 lea     SetupValues(pc),a5
                 movem.l (a5)+,d5-a4
                 move.w  -$1100(a1),d0
-                andi.w  #$F,d0
+                andi.w  #$0F,d0
                 beq.s   loc_232
                 move.l  #'SEGA',$2F00(a1)
 
@@ -462,9 +463,7 @@ loc_B58:
                 movem.l (sp)+,d0-a6
                 rte
 ; ---------------------------------------------------------------------------
-
-locret_B68:
-                rts
+locret_B68:     rts
 ; ---------------------------------------------------------------------------
 VBla_Index:     dc.w locret_B68-VBla_Index
                 dc.w code_b7e-VBla_Index
@@ -1127,7 +1126,6 @@ loc_12B8:
 NemDec_WriteIter:
                 moveq   #0,d4
                 moveq   #8,d3
-; loc_12C6:
 NemDec_WriteIter_Part2:
                 dbf     d0,loc_12B8
                 bra.s   NemDecRun
@@ -1575,8 +1573,8 @@ loc_154E:
                 dc.b $60 
                 dc.b $8A
 
-unk_15AA:       include "Unknown/Unk_15AA.asm"
-
+unk_15AA:       incbin "Misc/eniconfig.bin"
+                even
 ; =============== S U B R O U T I N E =======================================
 
 
@@ -1835,23 +1833,17 @@ PalCycle_Ending:
                 rts
 ; ---------------------------------------------------------------------------
 Pal_TitleCyc: incbin "Palettes/c_title.bin"
+            even
 Pal_GHZCyc: incbin "Palettes/c_ghz.bin"
-Pal_UnusedCyc:  dc.b $C, $E6, 6, $80, 8, $A2, $A, $C4
-                dc.b $A, $C4, $C, $E6, 6, $80, 8, $A2
-                dc.b 8, $A2, $A, $C4, $C, $E6, 6, $80
-                dc.b 6, $80, 8, $A2, $A, $C4, $C, $E6
-                dc.b $E, $EE, 0, 8, 0, $E, 0, $4E
-                dc.b 0, $8E, 0, $EE, 0, $EE, $E, $EE
-                dc.b 0, 8, 0, $E, 0, $4E, 0, $8E
-                dc.b 0, $8E, 0, $EE, $E, $EE, 0, 8
-                dc.b 0, $E, 0, $4E, 0, $4E, 0, $8E
-                dc.b 0, $EE, $E, $EE, 0, 8, 0, $E
-                dc.b 0, $E, 0, $4E, 0, $8E, 0, $EE
-                dc.b $E, $EE, 0, 8, 0, 8, 0, $E
-                dc.b 0, $4E, 0, $8E, 0, $EE, $E, $EE
+            even
+Pal_UnusedCyc: incbin "Palettes/c_unused.bin"
+            even
 Pal_SLZCyc: incbin "Palettes/c_slz.bin"
+            even
 Pal_SZCyc1: incbin "Palettes/c_sz_1.bin"
+            even
 Pal_SZCyc2: incbin "Palettes/c_sz_2.bin"
+            even
 
 ; =============== S U B R O U T I N E =======================================
 
@@ -2016,7 +2008,7 @@ PalCycle_Sega:
                 move.w  ($FFFFF632).w,d0
                 bmi.s   locret_1A68
                 subq.w  #2,($FFFFF632).w
-                lea     (unk_1A6A).l,a0
+                lea     (Pal_SegaCyc).l,a0
                 lea     ($FFFFFB04).w,a1
                 adda.w  d0,a0
                 move.l  (a0)+,(a1)+
@@ -2031,8 +2023,8 @@ locret_1A68:
 ; End of function PalCycle_Sega
 
 ; ---------------------------------------------------------------------------
-unk_1A6A:       include "Palettes/c_sega.asm"
-
+Pal_SegaCyc:    incbin "Palettes/c_sega.bin"
+                even
 ; =============== S U B R O U T I N E =======================================
 
 
@@ -2070,57 +2062,32 @@ loc_1AD4:
 ; End of function PalLoad2
 
 ; ---------------------------------------------------------------------------
-PalPointers:    dc.l Pal_Sega
-                dc.w $FB00
-                dc.w $1F
-                dc.l Pal_Title
-                dc.w $FB00
-                dc.w $1F
-                dc.l Pal_LevelSel
-                dc.w $FB00
-                dc.w $1F
-                dc.l Pal_Sonic
-                dc.w $FB00
-                dc.w 7
-                dc.l Pal_GHZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_LZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_MZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_SLZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_SZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_CWZ
-                dc.w $FB20
-                dc.w $17
-                dc.l Pal_Special
-                dc.w $FB00
-                dc.w $1F
-                dc.l word_1D9C
-                dc.w $FB00
-                dc.w $1F
-Pal_Sega: include "Palettes/sega.asm"
+PalPointers: include "_inc/Palette Pointers.asm"
+
+Pal_Sega: incbin "Palettes/sega.bin"
+          even
 Pal_Title: incbin "Palettes/title.bin"
+          even
 Pal_LevelSel: incbin "Palettes/levelsel.bin"
+          even
 Pal_Sonic: incbin "Palettes/sonic.bin"
+          even
 Pal_GHZ: incbin "Palettes/ghz.bin"
+          even
 Pal_LZ: incbin "Palettes/lz.bin"
-word_1D9C: include "Palettes/unused.asm"
+          even
+Pal_Unused: incbin "Palettes/unused.bin"
+          even
 Pal_MZ: incbin "Palettes/mz.bin"
+          even
 Pal_SLZ: incbin "Palettes/slz.bin"
+          even
 Pal_SZ: incbin "Palettes/sz.bin"
+          even
 Pal_CWZ: incbin "Palettes/cwz.bin"
-Pal_Special:    dc.w $400, 0, $822, $A44, $C66, $E88, $EEE, $AAA, $888, $444, $8AE, $46A, $E, 8, 4, $EE
-                dc.w $400, 0, $24, $68, $AC, $2EE, $EEE, $AAA, $888, $444, $AE4, $6A2, $EE, $88, $44, 0
-                dc.w $400, 0, $204, $628, $A4C, $C6E, $ECE, $800, $C42, $E86, $ECA, $EEC, 0, $EE0, $AA0, $440
-                dc.w $400, 0, $60, $A0, $C6, $EA, $AEC, $EEA, $EE0, $AA0, $880, $660, $440, $EE0, $AA0, $440
+          even
+Pal_Special: incbin "Palettes/ss.bin"
+          even
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to perform vertical synchronization
@@ -2139,8 +2106,6 @@ loc_2020:
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to generate a pseudo-random number in d0
-; d0 = (RNG & $FFFF0000) | ((RNG*41 & $FFFF) + ((RNG*41 & $FFFF0000) >> 16))
-; RNG = ((RNG*41 + ((RNG*41 & $FFFF) << 16)) & $FFFF0000) | (RNG*41 & $FFFF)
 ; ---------------------------------------------------------------------------
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
@@ -2169,26 +2134,22 @@ loc_2034:
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to calculate sine and cosine of an angle
-; d0 = input byte = angle (360 degrees == 256)
-; d0 = output word = 255 * sine(angle)
-; d1 = output word = 255 * cosine(angle)
 ; ---------------------------------------------------------------------------
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
-; sub_204E:
 CalcSine:
                 andi.w  #$FF,d0
                 add.w   d0,d0
                 addi.w  #$80,d0
-                move.w  byte_2066(pc,d0.w),d1
+                move.w  Sine_Data(pc,d0.w),d1
                 subi.w  #$80,d0
-                move.w  byte_2066(pc,d0.w),d0
+                move.w  Sine_Data(pc,d0.w),d0
                 rts
 ; End of function CalcSine
 
 ; ---------------------------------------------------------------------------
-byte_2066:      include "Misc/Sinewave.asm"
+Sine_Data:      incbin "Misc/Sinewave.bin"
 ; ---------------------------------------------------------------------------
                 movem.l d1-d2,-(sp)
                 move.w  d0,d1
@@ -2220,14 +2181,10 @@ loc_230E:
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to calculate arctangent of y/x
-; d1 = input x
-; d2 = input y
-; d0 = output angle (360 degrees == 256)
 ; ---------------------------------------------------------------------------
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
-; sub_231C:
 CalcAngle:
                 movem.l d3-d4,-(sp)
                 moveq   #0,d3
@@ -2252,7 +2209,7 @@ loc_233E:
                 lsl.l   #8,d4
                 divu.w  d3,d4
                 moveq   #0,d0
-                move.b  byte_2382(pc,d4.w),d0
+                move.b  Angle_Data(pc,d4.w),d0
                 bra.s   loc_235A
 ; ---------------------------------------------------------------------------
 
@@ -2260,7 +2217,7 @@ loc_2350:
                 lsl.l   #8,d3
                 divu.w  d4,d3
                 moveq   #$40,d0
-                sub.b   byte_2382(pc,d3.w),d0
+                sub.b   Angle_Data(pc,d3.w),d0
 
 loc_235A:
                 tst.w   d1
@@ -2278,7 +2235,7 @@ loc_2372:
                 movem.l (sp)+,d3-d4
                 rts
 ; ===========================================================================
-; loc_2378:
+
 CalcAngle_Zero:
                 move.w  #$40,d0
                 movem.l (sp)+,d3-d4
@@ -2286,7 +2243,8 @@ CalcAngle_Zero:
 ; End of function CalcAngle
 
 ; ---------------------------------------------------------------------------
-byte_2382:      include "Misc/AngleData.asm"
+Angle_Data:     incbin "Misc/AngleData.bin"
+                even
 ; ---------------------------------------------------------------------------
 
 SegaScreen:
@@ -2376,7 +2334,7 @@ loc_2592:
 loc_25D8:
                 move.w  (a5)+,(a6)
                 dbf     d1,loc_25D8
-                lea     (byte_18A62).l,a1
+                lea     (Eni_Title).l,a1
                 move.l  #$42060003,d0
                 moveq   #$21,d1
                 moveq   #$15,d2
@@ -2433,7 +2391,7 @@ loc_26AE:
                 bsr.w   RunPLC_RAM
                 move.w  ($FFFFD008).w,d0
                 addq.w  #2,d0
-                move.w  d0,($FFFFD008).w   ; Move Sonic To The Right
+                move.w  d0,($FFFFD008).w   
                 cmpi.w  #$1C00,d0
                 bcs.s   loc_26E4
                 move.b  #0,($FFFFF600).w
@@ -2493,7 +2451,7 @@ loc_277A:
 
 loc_2780:
                 add.w   d0,d0
-                move.w  word_27CE(pc,d0.w),d0
+                move.w  LevelSelectPointers(pc,d0.w),d0
                 bmi.s   loc_273C
                 cmpi.w  #$700,d0
                 bne.s   loc_2796
@@ -2521,12 +2479,7 @@ loc_27AA:
                 bsr.w   PlaySound_Special
                 rts
 ; ---------------------------------------------------------------------------
-word_27CE:      dc.w 0, 1, 2, $100
-                dc.w $101, $102, $200, $201
-                dc.w $202, $300, $301, $302
-                dc.w $400, $401, $402, $500
-                dc.w $501, $8500, $700, $700
-                dc.w $8000
+LevelSelectPointers: incbin "Misc/ls_point.bin"
 ; ---------------------------------------------------------------------------
 
 loc_27F8:
@@ -2555,7 +2508,7 @@ loc_282C:
                 move.w  ($FFFFFFF2).w,d0
                 andi.w  #7,d0
                 add.w   d0,d0
-                move.w  word_288E(pc,d0.w),d0
+                move.w  DemoOrder(pc,d0.w),d0
                 move.w  d0,($FFFFFE10).w
                 addq.w  #1,($FFFFFFF2).w
                 cmpi.w  #6,($FFFFFFF2).w
@@ -2577,9 +2530,7 @@ loc_2878:
                 move.l  d0,($FFFFFE26).w
                 rts
 ; ---------------------------------------------------------------------------
-word_288E:      dc.w 0, $600, $200, $600
-                dc.w $400, $600, $300, $600
-                dc.w $200, $600, $400, $600
+DemoOrder:      incbin "Misc/DemoOrder.bin"
 
 ; =============== S U B R O U T I N E =======================================
 
@@ -2792,7 +2743,6 @@ loc_2C5C:
                 moveq   #0,d0
                 move.w  #$27,d1
 
-; loc_2C6C:
 Level_PlayBgm:
                 move.l  d0,(a1)+
                 dbf     d1,Level_PlayBgm
@@ -3010,70 +2960,8 @@ loc_2F32:
 ; End of function sub_2EF4
 
 ; ---------------------------------------------------------------------------
-word_2F48:      dc.w $158, $90
-                dc.w $160, $90
-                dc.w $168, $90
-                dc.w $170, $90
-                dc.w $180, $90
-                dc.w $188, $90
-                dc.w $190, $90
-                dc.w $198, $90
-                dc.w $158, $A0
-                dc.w $160, $A0
-                dc.w $168, $A0
-                dc.w $170, $A0
-                dc.w $180, $A0
-                dc.w $188, $A0
-                dc.w $190, $A0
-                dc.w $198, $A0
-                dc.w $158, $A8
-                dc.w $160, $A8
-                dc.w $168, $A8
-                dc.w $170, $A8
-                dc.w $180, $A8
-                dc.w $188, $A8
-                dc.w $190, $A8
-                dc.w $198, $A8
-                dc.w $158, $B0
-                dc.w $160, $B0
-                dc.w $168, $B0
-                dc.w $170, $B0
-                dc.w $180, $B0
-                dc.w $188, $B0
-                dc.w $190, $B0
-                dc.w $198, $B0
-                dc.w $158, $B8
-                dc.w $160, $B8
-                dc.w $168, $B8
-                dc.w $170, $B8
-                dc.w $180, $B8
-                dc.w $188, $B8
-                dc.w $190, $B8
-                dc.w $198, $B8
-                dc.w $100, $98
-                dc.w $108, $98
-                dc.w $110, $98
-                dc.w $118, $98
-                dc.w $128, $98
-                dc.w $130, $98
-                dc.w $138, $98
-                dc.w $140, $98
-                dc.w $128, $A8
-                dc.w $130, $A8
-                dc.w $138, $A8
-                dc.w $140, $A8
-                dc.w $41F8, $AA00
-                dc.w $3438, $F64C
-                dc.w $363C, $9100
-                dc.w $3E3C, $FF
-                dc.w $3002, $6100
-                dc.w $F022, $E840
-                dc.w $6A02, $7000
-                dc.w $240, $1F
-                dc.w $1600, $30C3
-                dc.w $5442, $51CF
-                dc.w $FFE8, $5478
-                dc.w $F64C, $4E75
+word_2F48:      incbin "Misc/Super Debug.bin"
+                even
 
 ; =============== S U B R O U T I N E =======================================
 
@@ -3160,16 +3048,7 @@ locret_30FE:
 ; End of function MoveSonicInDemo
 
 ; ---------------------------------------------------------------------------
-Demo_Index:     dc.l Demo_GHZ
-                dc.l Demo_GHZ
-                dc.l Demo_GHZ
-                dc.l Demo_SS
-                dc.l Demo_MZ
-                dc.l Demo_MZ
-                dc.l Demo_SZ
-                dc.b 0, $8B, 8, $37, 0, $42, 8, $5C, 0, $6A, 8, $5F, 0, $2F, 8, $2C
-                dc.b 0, $21, 8, 3, $28, $30, 8, 8, 0, $2E, 8, $15, 0, $F, 8, $46
-                dc.b 0, $1A, 8, $FF, 8, $CA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Demo_Index:     include "_inc/Demo Index.asm"
 ; ---------------------------------------------------------------------------
                 cmpi.b  #6,($FFFFFE10).w
                 bne.s   locret_3176
@@ -3701,7 +3580,7 @@ sub_3730:
                 addq.w  #1,($FFFFF79A).w
                 andi.w  #$1F,d0
                 lsl.w   #2,d0
-                lea     (unk_380A).l,a0
+                lea     (byte_4A3C).l,a0
                 adda.w  d0,a0
                 move.b  (a0)+,d0
                 bpl.s   loc_3760
@@ -3774,430 +3653,22 @@ loc_37FC:
 ; End of function sub_3730
 
 ; ---------------------------------------------------------------------------
-unk_380A:       dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $92
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $90
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $8E
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $8C
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $8B
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $80
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $82
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $84
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $86
-                dc.b   3
-                dc.b   0
-                dc.b   7
-                dc.b $88
-                dc.b   7
-                dc.b   8
-                dc.b   7
-                dc.b   0
-                dc.b   7
-                dc.b  $A
-                dc.b   7
-                dc.b  $C
-                dc.b $FF
-                dc.b  $C
-                dc.b   7
-                dc.b $18
-                dc.b $FF
-                dc.b  $C
-                dc.b   7
-                dc.b $18
-                dc.b   7
-                dc.b  $A
-                dc.b   7
-                dc.b  $C
-                dc.b   7
-                dc.b   8
-                dc.b   7
-                dc.b   0
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $88
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $86
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $84
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $82
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $81
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $8A
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $8C
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $8E
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $90
-                dc.b   3
-                dc.b   0
-                dc.b   6
-                dc.b $92
-                dc.b   7
-                dc.b   2
-                dc.b   6
-                dc.b $24 ; $
-                dc.b   7
-                dc.b   4
-                dc.b   6
-                dc.b $30 ; 0
-                dc.b $FF
-                dc.b   6
-                dc.b   6
-                dc.b $3C ; <
-                dc.b $FF
-                dc.b   6
-                dc.b   6
-                dc.b $3C ; <
-                dc.b   7
-                dc.b   4
-                dc.b   6
-                dc.b $30 ; 0
-                dc.b   7
-                dc.b   2
-                dc.b   6
-                dc.b $24 ; $
-unk_388A:       dc.b $10
-                dc.b   1
-                dc.b $18
-                dc.b   0
-                dc.b $18
-                dc.b   1
-                dc.b $20
-                dc.b   0
-                dc.b $20
-                dc.b   1
-                dc.b $28 ; (
-                dc.b   0
-                dc.b $28 ; (
-                dc.b   1
-unk_3898:       dc.b   4
-                dc.b   0
-                dc.b   6
-                dc.b   0
-                dc.b   6
-                dc.b $20
-                dc.b   6
-                dc.b $24 ; $
-                dc.b   6
-                dc.b $64 ; d
-                dc.b   6
-                dc.b $66 
-                dc.b   6
-                dc.b   0
-                dc.b   8
-                dc.b $20
-                dc.b  $A
-                dc.b $64 ; d
-                dc.b  $A
-                dc.b $68 ; h
-                dc.b  $A
-                dc.b $A6
-                dc.b  $A
-                dc.b $AA
-                dc.b   8
-                dc.b   0
-                dc.b  $C
-                dc.b $42 ; B
-                dc.b  $E
-                dc.b $86
-                dc.b  $E
-                dc.b $CA
-                dc.b  $E
-                dc.b $EC
-                dc.b  $E
-                dc.b $EE
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b $20
-                dc.b   6
-                dc.b $20
-                dc.b   6
-                dc.b $20
-                dc.b   8
-                dc.b $64 ; d
-                dc.b   6
-                dc.b $66 
-                dc.b   4
-                dc.b $20
-                dc.b   6
-                dc.b $20
-                dc.b   8
-                dc.b $42 ; B
-                dc.b   8
-                dc.b $42 ; B
-                dc.b  $A
-                dc.b $86
-                dc.b  $A
-                dc.b $AA
-                dc.b   6
-                dc.b $20
-                dc.b   8
-                dc.b $42 ; B
-                dc.b  $A
-                dc.b $64 ; d
-                dc.b  $C
-                dc.b $86
-                dc.b  $E
-                dc.b $A8
-                dc.b  $E
-                dc.b $EE
-unk_38E0:       dc.b  $E
-                dc.b $EA
-                dc.b  $E
-                dc.b $E0
-                dc.b  $A
-                dc.b $A0
-                dc.b   8
-                dc.b $80
-                dc.b   6
-                dc.b $60 
-                dc.b   4
-                dc.b $40 ; @
-                dc.b  $E
-                dc.b $E0
-                dc.b  $A
-                dc.b $A0
-                dc.b   4
-                dc.b $40 ; @
-                dc.b  $A
-                dc.b $A0
-                dc.b  $A
-                dc.b $A0
-                dc.b  $A
-                dc.b $A0
-                dc.b   8
-                dc.b $60 
-                dc.b   8
-                dc.b $60 
-                dc.b   8
-                dc.b $60 
-                dc.b   6
-                dc.b $40 ; @
-                dc.b   6
-                dc.b $40 ; @
-                dc.b   6
-                dc.b $40 ; @
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b  $A
-                dc.b $EC
-                dc.b   6
-                dc.b $EA
-                dc.b   4
-                dc.b $C6
-                dc.b   2
-                dc.b $A4
-                dc.b   0
-                dc.b $82
-                dc.b   0
-                dc.b $60 
-                dc.b   6
-                dc.b $EA
-                dc.b   4
-                dc.b $C6
-                dc.b   0
-                dc.b $60 
-                dc.b   4
-                dc.b $C6
-                dc.b   4
-                dc.b $C6
-                dc.b   4
-                dc.b $C6
-                dc.b   4
-                dc.b $84
-                dc.b   4
-                dc.b $84
-                dc.b   4
-                dc.b $84
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b  $E
-                dc.b $CC
-                dc.b  $E
-                dc.b $8A
-                dc.b  $C
-                dc.b $68 ; h
-                dc.b  $A
-                dc.b $46 
-                dc.b   8
-                dc.b $24 ; $
-                dc.b   6
-                dc.b   2
-                dc.b  $E
-                dc.b $8A
-                dc.b  $C
-                dc.b $68 ; h
-                dc.b   6
-                dc.b   2
-                dc.b  $C
-                dc.b $68 ; h
-                dc.b  $C
-                dc.b $68 ; h
-                dc.b  $C
-                dc.b $68 ; h
-                dc.b   8
-                dc.b $46 
-                dc.b   8
-                dc.b $46 
-                dc.b   8
-                dc.b $46 
-                dc.b   6
-                dc.b $24 ; $
-                dc.b   6
-                dc.b $24 ; $
-                dc.b   6
-                dc.b $24 ; $
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b  $A
-                dc.b $EC
-                dc.b   8
-                dc.b $CA
-                dc.b   6
-                dc.b $A8
-                dc.b   4
-                dc.b $86
-                dc.b   2
-                dc.b $64 ; d
-                dc.b   0
-                dc.b $42 ; B
-                dc.b   8
-                dc.b $CA
-                dc.b   6
-                dc.b $A8
-                dc.b   0
-                dc.b $42 ; B
-                dc.b   6
-                dc.b $A8
-                dc.b   6
-                dc.b $A8
-                dc.b   6
-                dc.b $A8
-                dc.b   6
-                dc.b $84
-                dc.b   6
-                dc.b $84
-                dc.b   6
-                dc.b $84
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b $42 ; B
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b  $E
-                dc.b $EC
-                dc.b  $C
-                dc.b $CA
-                dc.b  $A
-                dc.b $A8
-                dc.b   8
-                dc.b $86
-                dc.b   6
-                dc.b $64 ; d
-                dc.b   4
-                dc.b $42 ; B
-                dc.b  $C
-                dc.b $CA
-                dc.b  $A
-                dc.b $A8
-                dc.b   4
-                dc.b $42 ; B
-                dc.b  $A
-                dc.b $A8
-                dc.b  $A
-                dc.b $A8
-                dc.b  $A
-                dc.b $A8
-                dc.b   8
-                dc.b $64 ; d
-                dc.b   8
-                dc.b $64 ; d
-                dc.b   8
-                dc.b $64 ; d
-                dc.b   6
-                dc.b $42 ; B
-                dc.b   6
-                dc.b $42 ; B
-                dc.b   6
-                dc.b $42 ; B
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b   4
-                dc.b   0
+byte_4A3C:      dc.b 3,	0, 7, $92, 3, 0, 7, $90, 3, 0, 7, $8E, 3, 0, 7,	$8C
+		dc.b 3,	0, 7, $8B, 3, 0, 7, $80, 3, 0, 7, $82, 3, 0, 7,	$84
+		dc.b 3,	0, 7, $86, 3, 0, 7, $88, 7, 8, 7, 0, 7,	$A, 7, $C
+		dc.b $FF, $C, 7, $18, $FF, $C, 7, $18, 7, $A, 7, $C, 7,	8, 7, 0
+		dc.b 3,	0, 6, $88, 3, 0, 6, $86, 3, 0, 6, $84, 3, 0, 6,	$82
+		dc.b 3,	0, 6, $81, 3, 0, 6, $8A, 3, 0, 6, $8C, 3, 0, 6,	$8E
+		dc.b 3,	0, 6, $90, 3, 0, 6, $92, 7, 2, 6, $24, 7, 4, 6,	$30
+		dc.b $FF, 6, 6,	$3C, $FF, 6, 6,	$3C, 7,	4, 6, $30, 7, 2, 6, $24
+		even
+
+unk_388A:       dc.b $10, 1, $18, 0, $18, 1, $20, 0, $20, 1, $28, 0, $28, 1
+                even
+
+unk_3898:       include "Unknown/Unk_3898.asm"
+
+unk_38E0:       include "Unknown/Unk_38E0.asm"
 
 ; =============== S U B R O U T I N E =======================================
 
@@ -4248,7 +3719,7 @@ loc_3A1C:
                 bne.s   loc_3A42
                 subq.w  #1,($FFFFF718).w
                 lea     ($FFFFAB00).w,a3
-                move.l  #byte_18000,d2
+                move.l  #Unused_Text,d2
                 moveq   #6,d1
 
 loc_3A32:
@@ -7045,39 +6516,11 @@ locret_51F4:
 ; End of function ObjGHZBridge_Bend
 
 ; ---------------------------------------------------------------------------
-ObjGHZBridge_BendData:dc.b 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 6, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, 6, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, 8, 6, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, 8, 6, 4, 2, 0, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, $A, 8, 6, 4, 2, 0, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, $C, $A, 8, 6, 4, 2, 0, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, $C, $C, $A, 8, 6, 4, 2, 0, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, $C, $E, $C, $A, 8, 6, 4, 2, 0, 0, 0
-                dc.b 2, 4, 6, 8, $A, $C, $E, $E, $C, $A, 8, 6, 4, 2, 0, 0
-                dc.b 2, 4, 6, 8, $A, $C, $E, $10, $E, $C, $A, 8, 6, 4, 2, 0
-                dc.b 2, 4, 6, 8, $A, $C, $E, $10, $10, $E, $C, $A, 8, 6, 4, 2
-ObjGHZBridge_BendData2:dc.b $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $B5, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $7E, $DB, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $61, $B5, $EC, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $4A, $93, $CD, $F3, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $3E, $7E, $B0, $DB, $F6, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $38, $6D, $9D, $C5, $E4, $F8, $FF, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $31, $61, $8E, $B5, $D4, $EC, $FB, $FF, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.b $2B, $56, $7E, $A2, $C1, $DB, $EE, $FB, $FF, 0, 0, 0, 0, 0, 0, 0
-                dc.b $25, $4A, $73, $93, $B0, $CD, $E1, $F3, $FC, $FF, 0, 0, 0, 0, 0, 0
-                dc.b $1F, $44, $67, $88, $A7, $BD, $D4, $E7, $F4, $FD, $FF, 0, 0, 0, 0, 0
-                dc.b $1F, $3E, $5C, $7E, $98, $B0, $C9, $DB, $EA, $F6, $FD, $FF, 0, 0, 0, 0
-                dc.b $19, $38, $56, $73, $8E, $A7, $BD, $D1, $E1, $EE, $F8, $FE, $FF, 0, 0, 0
-                dc.b $19, $38, $50, $6D, $83, $9D, $B0, $C5, $D8, $E4, $F1, $F8, $FE, $FF, 0, 0
-                dc.b $19, $31, $4A, $67, $7E, $93, $A7, $BD, $CD, $DB, $E7, $F3, $F9, $FE, $FF, 0
-                dc.b $19, $31, $4A, $61, $78, $8E, $A2, $B5, $C5, $D4, $E1, $EC, $F4, $FB, $FE, $FF
+ObjGHZBridge_BendData: incbin "Misc/ghzbend1.bin"
+                       even
+
+ObjGHZBridge_BendData2: incbin "Misc/ghzbend2.bin"
+                        even
 ; ---------------------------------------------------------------------------
 
 ObjGHZBridge_ChkDel:
@@ -8488,7 +7931,7 @@ Obj1B_Index:    dc.w loc_663E-*
 
 loc_663E:
                 addq.b  #2,$24(a0)
-                move.l  #unk_66DC,4(a0)
+                move.l  #Map_obj1B,4(a0)
                 move.w  #$4000,2(a0)
                 move.b  #4,1(a0)
                 move.b  #$20,$18(a0) 
@@ -8546,52 +7989,7 @@ loc_66D6:
                 bsr.w   DeleteObject
                 rts
 ; ---------------------------------------------------------------------------
-unk_66DC:       dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b $19
-                dc.b   4
-                dc.b $F0
-                dc.b  $A
-                dc.b   0
-                dc.b $89
-                dc.b $E0
-                dc.b $F0
-                dc.b  $A
-                dc.b   8
-                dc.b $89
-                dc.b   8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $92
-                dc.b $F8
-                dc.b   8
-                dc.b  $C
-                dc.b   0
-                dc.b $96
-                dc.b $F0
-                dc.b   4
-                dc.b $E8
-                dc.b  $F
-                dc.b   0
-                dc.b $9A
-                dc.b $E0
-                dc.b $E8
-                dc.b  $F
-                dc.b   8
-                dc.b $9A
-                dc.b   0
-                dc.b   8
-                dc.b  $D
-                dc.b   0
-                dc.b $AA
-                dc.b $E0
-                dc.b   8
-                dc.b  $D
-                dc.b   8
-                dc.b $AA
-                dc.b   0
+Map_obj1B:      include "Map/Splashes.asm"
 ; ---------------------------------------------------------------------------
 
 ObjScenery:
@@ -11129,106 +10527,9 @@ loc_8576:
 ; End of function RunObject
 
 ; ===========================================================================
-; ---------------------------------------------------------------------------
-; OBJECT POINTER ARRAY ; object pointers ; sprite pointers ; object list ; sprite list
-;
-; This array contains the pointers to all the objects used (and unused) in the game.
-; ---------------------------------------------------------------------------
-; loc_8580:
-Obj_Index:      dc.l Obj01			; Sonic
-                dc.l Obj02			; Leftover from February 1990 prototype (glitchy box sprite)
-                dc.l Obj03			; Leftover from February 1990 prototype (glitchy tall sprite)
-                dc.l Obj04			; Leftover from February 1990 prototype (glitchy tall animated sprite)
-                dc.l Obj05			; Leftover from February 1990 prototype
-                dc.l Obj06			; Leftover from February 1990 prototype
-                dc.l Obj07			; Leftover from February 1990 prototype (deletes itself upon initialization)
-                dc.l ObjectMoveAndFall		; Obj08
-                dc.l Obj09			; Sonic in the Special Stages
-                dc.l ObjectMoveAndFall		; Obj0A
-                dc.l ObjectMoveAndFall		; Obj0B
-                dc.l ObjectMoveAndFall		; Obj0C
-                dc.l Obj0D			; Signpost
-                dc.l Obj0E			; Sonic on the title screen
-                dc.l Obj0F			; "PRESS START BUTTON" on the title screen
-                dc.l Obj10			; Animation test object (goes through all of Sonic's animations)
-                dc.l ObjGHZBridge		; Bridge in Green Hill Zone
-                dc.l ObjSYZLamp			; Lamp in Sparkling Zone
-                dc.l Obj13			; Fireball spawner
-                dc.l ObjFireBall		; Fireball in Marble Zone
-                dc.l Obj15			; Swinging Platform
-                dc.l ObjectMoveAndFall		; Obj16
-                dc.l ObjGHZHelix		; Spike helix in Green Hill Zone
-                dc.l ObjPlatform		; Moving/stationary/falling platform
-                dc.l ObjRollingBall		; The Green Hill Zone Ball
-                dc.l ObjGHZCliff		; Collapsable ledge in Green Hill Zone
-                dc.l Obj1B			; Water surface in Labyrinth Zone (unused as there's obviously no water implemented)
-                dc.l ObjScenery			; Scenery object
-                dc.l ObjUnkSwitch		; Switch (unused)
-                dc.l ObjBallHog			; Ballhog (unused)
-                dc.l ObjCrabmeat		; Crabmeat
-                dc.l ObjBallHogBall		; Ballhog's ball (unused)
-                dc.l ObjHUD			; HUD
-                dc.l ObjBuzzBomber		; Buzz Bomber
-                dc.l ObjBuzzMissile		; Buzz Bomber missile
-                dc.l ObjBallHogExplosion	; Ballhog's ball explosions (unused, graphics remained in REV00 but deleted in REV01)
-                dc.l ObjRing			; Standard ring object
-                dc.l ObjMonitor			; Monitors
-                dc.l ObjEnemyExplode		; Badnik explosion
-                dc.l ObjAnimals			; Animals from badniks
-                dc.l ObjPoints			; Points
-                dc.l Obj2A			; Door opened by swtich (replaced with one-way door for Scrap Brain Zone in the final)
-                dc.l ObjChopper			; Chopper
-                dc.l ObjJaws			; Jaws (unused)
-                dc.l ObjBurrobot		; Burrobots (unused)
-                dc.l Obj2E			; Power ups from monitor
-                dc.l Obj2F
-                dc.l Obj30
-                dc.l Obj31
-                dc.l Obj32
-                dc.l Obj33
-                dc.l Obj34                      ; Title Cards
-                dc.l Obj35
-                dc.l Obj36                      ; Spikes
-                dc.l Obj37
-                dc.l Obj38
-                dc.l Obj39
-                dc.l Obj3A
-                dc.l Obj3B                      ; Green Hill Zone Purple Rock
-                dc.l Obj3C
-                dc.l Obj3D                      ; Green Hill Zone Boss
-                dc.l Obj3E                      ; Animal Capsule
-                dc.l Obj3F
-                dc.l ObjMotobug
-                dc.l ObjSprings
-                dc.l ObjNewtron
-                dc.l ObjRoller
-                dc.l ObjWalls
-                dc.l Obj45                      ; Sideways Stomper
-                dc.l Obj46                      ; Brick
-                dc.l ObjBumper
-                dc.l Obj48
-                dc.l Obj49
-                dc.l ObjSpecialWarp
-                dc.l ObjBigRing
-                dc.l Obj4C
-                dc.l Obj4D
-                dc.l ObjMZLavaWall
-                dc.l ObjSplats
-                dc.l ObjYadrin
-                dc.l Obj51
-                dc.l Obj52
-                dc.l Obj53
-                dc.l Obj54
-                dc.l Obj55
-                dc.l Obj56
-                dc.l Obj57
-                dc.l Obj58
-                dc.l Obj59
-                dc.l Obj5A
-                dc.l Obj5B
-                dc.l Obj5C
-                dc.l Obj5D
-                dc.l Obj5E
+
+Obj_Index:      include "_inc/Object Index.asm"
+
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Subroutine to make an object move and fall downward increasingly fast
@@ -11952,7 +11253,7 @@ ObjJaws_Index:  dc.w entry_8C74-ObjJaws_Index
 
 entry_8C74:
                 addq.b  #2,$24(a0)
-                move.l  #unk_8CBA,4(a0)
+                move.l  #Map_Jaws,4(a0)
                 move.w  #$47B,2(a0)
                 move.b  #4,1(a0)
                 move.b  #$A,$20(a0)
@@ -11967,7 +11268,7 @@ entry_8ca4:
 ; ---------------------------------------------------------------------------
 unk_8CB2:       include "Ani/Jaws.asm"
 
-unk_8CBA:       include "Map/Jaws.asm"
+Map_Jaws:       include "Map/Jaws.asm"
 ; ---------------------------------------------------------------------------
 
 ObjBurrobot:
@@ -11984,7 +11285,7 @@ ObjBurrobot_Index:dc.w entry_8D02-ObjBurrobot_Index
 entry_8D02:
                 move.b  #$13,$16(a0)
                 move.b  #8,$17(a0)
-                move.l  #unk_8E64,4(a0)
+                move.l  #Map_Burrobot,4(a0)
                 move.w  #$239C,2(a0)
                 move.b  #4,1(a0)
                 move.b  #4,$19(a0)
@@ -12098,7 +11399,7 @@ entry_8e46:
 ; ---------------------------------------------------------------------------
 unk_8E4C:       include "Ani/Burrobot.asm"
 
-unk_8E64:       include "Map/Burrobot.asm"
+Map_Burrobot:   include "Map/Burrobot.asm"
 ; ---------------------------------------------------------------------------
 
 Obj2F:
@@ -12109,20 +11410,18 @@ Obj2F:
 ; ---------------------------------------------------------------------------
 Obj2F_Index:    dc.w entry_8ede-Obj2F_Index
                 dc.w entry_8f3c-Obj2F_Index
+
 index_8ed2:     dc.w entry_9120-index_8ed2
-                dc.b 0
-                dc.b $40 ; @
+                dc.b 0, $40
                 dc.w entry_9198-index_8ed2
-                dc.b 1
-                dc.b $40 ; @
+                dc.b 1, $40
                 dc.w entry_916C-index_8ed2
-                dc.b   2
-                dc.b $20
+                dc.b 2, $20
 ; ---------------------------------------------------------------------------
 
 entry_8ede:
                 addq.b  #2,$24(a0)
-                move.l  #unk_92DC,4(a0)
+                move.l  #Map_MZPlatform,4(a0)
                 move.w  #$C000,2(a0)
                 move.b  #4,1(a0)
                 move.b  #5,$19(a0)
@@ -12313,7 +11612,7 @@ sub_90A4:
                 addq.b  #1,(a2)
                 lea     1(a2,d0.w),a2
                 move.w  a1,d0
-                subi.w  #$D000,d0
+                subi.w  #-$3000,d0
                 lsr.w   #6,d0
                 andi.w  #$7F,d0
                 move.b  d0,(a2)
@@ -12342,6 +11641,8 @@ loc_90CE:
 
 loc_90EE:
                 moveq   #0,d2
+                
+
                 lea     $36(a0),a2
                 move.b  (a2),d2
                 clr.b   (a2)+
@@ -12363,32 +11664,14 @@ loc_90FC:
 locret_911E:
                 rts
 ; ---------------------------------------------------------------------------
-entry_9120:     dc.b $20, $20, $20, $20, $20, $20, $20, $20
-                dc.b $20, $20, $20, $20, $20, $20, $21, $22
-                dc.b $23, $24, $25, $26, $27, $28, $29, $2A
-                dc.b $2B, $2C, $2D, $2E, $2F, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $2F
-                dc.b $2E, $2D, $2C, $2B, $2A, $29, $28, $27
-                dc.b $26, $25, $24, $23, $22, $21, $20, $20
-                dc.b $20, $20, $20, $20, $20, $20, $20, $20
-                dc.b $20, $20, $20, $20
-entry_916C:     dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30, $30, $30, $30, $30
-                dc.b $30, $30, $30, $30
-entry_9198:     dc.b $20, $20, $20, $20, $20, $20, $21, $22
-                dc.b $23, $24, $25, $26, $27, $28, $29, $2A
-                dc.b $2B, $2C, $2D, $2E, $2F, $30, $31, $32
-                dc.b $33, $34, $35, $36, $37, $38, $39, $3A
-                dc.b $3B, $3C, $3D, $3E, $3F, $40, $40, $40
-                dc.b $40, $40, $40, $40, $40, $40, $40, $40
-                dc.b $40, $40, $40, $40, $40, $40, $40, $3F
-                dc.b $3E, $3D, $3C, $3B, $3A, $39, $38, $37
-                dc.b $36, $35, $34, $33, $32, $31, $30, $30
-                dc.b $30, $30, $30, $30
+entry_9120:     incbin "Misc/mz_pfm1.bin"
+                even
+
+entry_916C:     incbin "Misc/mz_pfm2.bin"
+                even
+
+entry_9198:     incbin "Misc/mz_pfm3.bin"
+                even
 ; ---------------------------------------------------------------------------
 
 Obj35:
@@ -12434,7 +11717,7 @@ entry_9240:
                 move.w  d0,$C(a0)
                 cmpi.w  #$84,d1
                 bcc.s   loc_92B8
-                addi.l  #loc_10000,8(a0)
+                addi.l  #$10000,8(a0)
                 cmpi.w  #$80,d1
                 bcc.s   loc_92B8
                 move.l  8(a0),d0
@@ -12465,16 +11748,9 @@ loc_92C6:
                 bsr.w   AnimateObject
                 bra.w   DisplaySprite
 ; ---------------------------------------------------------------------------
-unk_92D4:       dc.b   0
-                dc.b   2
-                dc.b   5
-                dc.b   0
-                dc.b $20
-                dc.b   1
-                dc.b $21 ; !
-                dc.b $FF
+unk_92D4:       include "Ani/Obj35.asm"
 
-unk_92DC:       include "Map/MZPlatform.asm"
+Map_MZPlatform: include "Map/MZPlatform.asm"
 
 Map_FireBall:   include "Map/MZFireball.asm"
 ; ---------------------------------------------------------------------------
@@ -12506,10 +11782,12 @@ Obj30_Index:    dc.w entry_93fa-Obj30_Index
                 dc.w entry_94ca-Obj30_Index
                 dc.w entry_94d8-Obj30_Index
                 dc.w entry_9500-Obj30_Index
+
 byte_93EA:      dc.b 2, 4, 0
                 dc.b 4, $48, 1
                 dc.b 6, 4, 2
                 even
+
 byte_93F4:      dc.b 8, 0, 3
                 dc.b $A, 0, 2
 ; ---------------------------------------------------------------------------
@@ -12539,7 +11817,7 @@ loc_941C:
                 ext.w   d0
                 add.w   $C(a0),d0
                 move.w  d0,$C(a1)
-                move.l  #unk_9630,4(a1)
+                move.l  #Map_MZGlassPillar,4(a1)
                 move.w  #$C38E,2(a1)
                 move.b  #4,1(a1)
                 move.w  $C(a1),$30(a1)
@@ -12735,7 +12013,7 @@ loc_9624:
                 move.w  d1,$C(a0)
                 rts
 ; ---------------------------------------------------------------------------
-unk_9630:       include "Map/MZGlassPillar.asm"
+Map_MZGlassPillar:  include "Map/MZGlassPillar.asm"
 ; ---------------------------------------------------------------------------
 
 Obj31:
@@ -12749,12 +12027,15 @@ index_96c2:     dc.w entry_96ea-index_96c2
                 dc.w entry_9834-index_96c2
                 dc.w entry_9846-index_96c2
                 dc.w entry_9818-index_96c2
+
 byte_96CC:      dc.b 0, 0
                 dc.b 1, 0
+
 byte_96D0:      dc.b 2, 0, 0
                 dc.b 4, $1C, 1
                 dc.b 8, $CC, 3
                 dc.b 6, $F0, 2
+
 word_96DC:      dc.w $7000, $A000
                 dc.w $5000, $7800
                 dc.w $3800, $5800
@@ -12799,7 +12080,7 @@ loc_972C:
                 ext.w   d0
                 add.w   $C(a0),d0
                 move.w  d0,$C(a1)
-                move.l  #unk_9B84,4(a1)
+                move.l  #Map_SpikedWeight,4(a1)
                 move.w  #$300,2(a1)
                 move.b  #4,1(a1)
                 move.w  $C(a1),$30(a1)
@@ -13045,16 +12326,15 @@ index_99de:     dc.w entry_99fa-index_99de
                 dc.w entry_9ac4-index_99de
                 dc.w entry_9ad8-index_99de
                 dc.w entry_9ab0-index_99de
-byte_99E8:      dc.b 2, 4, 0
-                dc.b 4, $E4, 1
-                dc.b 8, $34, 3
-                dc.b 6, $28, 2
-unk_99F4:       dc.b $38 ; 8
-                dc.b   0
-                dc.b $A0
-                dc.b   0
-                dc.b $50 ; P
-                dc.b   0
+
+byte_99E8:      dc.b	2,   4,	  0	; routine number, x-position, frame number
+		dc.b	4, $E4,	  1
+		dc.b	8, $34,	  3
+		dc.b	6, $28,	  2
+
+unk_99F4:       dc.w $3800
+		dc.w $A000
+		dc.w $5000
 ; ---------------------------------------------------------------------------
 
 entry_99fa:
@@ -13080,7 +12360,7 @@ loc_9A18:
                 ext.w   d0
                 add.w   8(a0),d0
                 move.w  d0,8(a1)
-                move.l  #$9C90,4(a1)
+                move.l  #Map_obj45,4(a1)
                 move.w  #$300,2(a1)
                 move.b  #4,1(a1)
                 move.w  8(a1),$30(a1)
@@ -13154,7 +12434,6 @@ sub_9AFC:
                 move.w  unk_9B0C(pc,d0.w),d1
                 jmp     unk_9B0C(pc,d1.w)
 ; End of function sub_9AFC
-
 ; ---------------------------------------------------------------------------
 unk_9B0C:       dc.b   0
                 dc.b   4
@@ -13277,7 +12556,10 @@ unk_9B0C:       dc.b   0
                 dc.b $4E ; N
                 dc.b $75 ; u
 
-unk_9B84:       include "Map/SpikedWeight.asm"
+Map_SpikedWeight: include "Map/SpikedWeight.asm"
+
+Map_Obj45:      include "Map/Obj45.asm"
+
 ; ---------------------------------------------------------------------------
 
 Obj32:
@@ -14092,10 +13374,10 @@ entry_A4DE:
                 movea.l a0,a1
                 moveq   #0,d0
                 move.b  ($FFFFFE10).w,d0
-                lea     (word_A5E4).l,a3
+                lea     (Obj34_ConData).l,a3
                 lsl.w   #4,d0
                 adda.w  d0,a3
-                lea     (word_A5D4).l,a2
+                lea     (Obj34_ItemData).l,a2
                 moveq   #3,d1
 
 loc_A4F8:
@@ -14189,106 +13471,29 @@ loc_A5B0:
 loc_A5D0:
                 bra.w   DeleteObject
 ; ---------------------------------------------------------------------------
-word_A5D4:      dc.w $D0
-                dc.b   2
-                dc.b   0
+Obj34_ItemData: dc.w $D0
+                dc.b 2, 0
                 dc.w $E4
-                dc.b   2
-                dc.b   6
-                dc.b 0
+                dc.b 2, 6, 0
                 dc.b $EA
-                dc.b   2
-                dc.b   7
+                dc.b 2, 7
                 dc.w $E0
-                dc.b   2
-                dc.b  $A
-word_A5E4:      dc.w 0, $120, $FEFC
-                dc.w $13C
-                dc.w $414
-                dc.w $154
-                dc.w $214
-                dc.w $154
-                dc.w 0
-                dc.b   1
-                dc.b $20
-                dc.b $FE
-                dc.b $F4
-                dc.b   1
-                dc.b $34 ; 4
-                dc.b   4
-                dc.b  $C
-                dc.b   1
-                dc.b $4C ; L
-                dc.b   2
-                dc.b  $C
-                dc.b   1
-                dc.b $4C ; L
-                dc.b   0
-                dc.b   0
-                dc.b   1
-                dc.b $20
-                dc.b $FE
-                dc.b $E0
-                dc.b   1
-                dc.b $20
-                dc.b   3
-                dc.b $F8
-                dc.b   1
-                dc.b $38 ; 8
-                dc.b   1
-                dc.b $F8
-                dc.b   1
-                dc.b $38 ; 8
-                dc.b   0
-                dc.b   0
-                dc.b   1
-                dc.b $20
-                dc.b $FE
-                dc.b $FC
-                dc.b   1
-                dc.b $3C ; <
-                dc.b   4
-                dc.b $14
-                dc.b   1
-                dc.b $54 ; T
-                dc.b   2
-                dc.b $14
-                dc.b   1
-                dc.b $54 ; T
-                dc.b   0
-                dc.b   0
-                dc.b   1
-                dc.b $20
-                dc.b $FE
-                dc.b $F4
-                dc.b   1
-                dc.b $34 ; 4
-                dc.b   4
-                dc.b  $C
-                dc.b   1
-                dc.b $4C ; L
-                dc.b   2
-                dc.b  $C
-                dc.b   1
-                dc.b $4C ; L
-                dc.b   0
-                dc.b   0
-                dc.b   1
-                dc.b $20
-                dc.b $FF
-                dc.b   0
-                dc.b   1
-                dc.b $40 ; @
-                dc.b   4
-                dc.b $18
-                dc.b   1
-                dc.b $58 ; X
-                dc.b   2
-                dc.b $18
-                dc.b   1
-                dc.b $58 ; X
+                dc.b 2, $A
 ; ---------------------------------------------------------------------------
-
+; Title	card configuration data
+; Format:
+; 4 bytes per item (YYYY XXXX)
+; 4 items per level (GREEN HILL, ZONE, ACT X, oval)
+; ---------------------------------------------------------------------------
+Obj34_ConData:  dc.w 0, $120, $FEFC, $13C, $414, $154, $214, $154 ; GHZ
+                dc.w 0, $120, $FEF4, $134, $40C, $14C, $20C, $14C ; LZ
+                dc.w 0, $120, $FEE0, $120, $3F8, $138, $1F8, $138 ; MZ
+                dc.w 0, $120, $FEFC, $13C, $414, $154, $214, $154 ; SLZ
+                dc.w 0, $120, $FEF4, $134, $40C, $14C, $20C, $14C ; SZ
+                dc.w 0, $120, $FF00, $140, $418, $158, $218, $158 ; CWZ
+; ---------------------------------------------------------------------------
+; Object 39 - "GAME OVER"
+; ---------------------------------------------------------------------------
 Obj39:
                 moveq   #0,d0
                 move.b  $24(a0),d0
@@ -14315,7 +13520,7 @@ loc_A660:
 
 loc_A676:
                 move.w  #$F0,$A(a0)
-                move.l  #unk_AA20,4(a0)
+                move.l  #Map_obj39,4(a0)
                 move.w  #$8580,2(a0)
                 move.b  #0,1(a0)
                 move.b  #0,$19(a0)
@@ -14395,7 +13600,7 @@ loc_A70C:
 
 loc_A72E:
                 move.b  d0,$1A(a1)
-                move.l  #unk_AA3A,4(a1)
+                move.l  #Map_obj3A,4(a1)
                 move.w  #$8580,2(a1)
                 move.b  #0,1(a1)
                 lea     $40(a1),a1
@@ -14499,30 +13704,9 @@ loc_A81C:
 Obj3A_Display2:
                 bra.w   DisplaySprite
 ; ---------------------------------------------------------------------------
-LevelOrder:     dc.w 1
-                dc.w 2
-                dc.w $200
-                dc.w 0
-                dc.w $101
-                dc.w $102
-                dc.w $200
-                dc.w 0
-                dc.w $201
-                dc.w $202
-                dc.w $400
-                dc.w 0
-                dc.w 0
-                dc.w $302
-                dc.w $200
-                dc.w 0
-                dc.w $300
-                dc.w $402
-                dc.w $500
-                dc.w 0
-                dc.w $501
-                dc.w $502
-                dc.w 0
-                dc.w 0
+LevelOrder:     incbin "Misc/lvl_ord.bin"
+                even
+
 Obj3A_Config:   dc.w 4, $124, $BC
                 dc.b 2, 0
                 dc.w $FEE0, $120, $D0
@@ -14537,628 +13721,166 @@ Obj3A_Config:   dc.w 4, $124, $BC
                 dc.b 2, 4
                 dc.w $20C, $14C, $CC
                 dc.b 2, 5
-Map_obj34:      dc.b   0
-                dc.b $16
-                dc.b   0
-                dc.b $44 ; D
-                dc.b   0
-                dc.b $72 ; r
-                dc.b   0
-                dc.b $92
-                dc.b   0
-                dc.b $C0
-                dc.b   0
-                dc.b $EE
-                dc.b   1
-                dc.b $18
-                dc.b   1
-                dc.b $2E ; .
-                dc.b   1
-                dc.b $39 ; 9
-                dc.b   1
-                dc.b $44 ; D
-                dc.b   1
-                dc.b $4F ; O
-                dc.b   9
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $18
-                dc.b $B4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $C4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $10
-                dc.b $D4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $10
-                dc.b $E4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2E ; .
-                dc.b $F4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $1C
-                dc.b $14
-                dc.b $F8
-                dc.b   1
-                dc.b   0
-                dc.b $20
-                dc.b $24 ; $
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b $2C ; ,
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b $3C ; <
-                dc.b   9
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b $BC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $CC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   4
-                dc.b $DC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $4A ; J
-                dc.b $EC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $FC
-                dc.b $F8
-                dc.b   1
-                dc.b   0
-                dc.b $20
-                dc.b  $C
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2E ; .
-                dc.b $14
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $42 ; B
-                dc.b $24 ; $
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $1C
-                dc.b $34 ; 4
-                dc.b   6
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2A 
-                dc.b $CF
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $E0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $F0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b $10
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $10
-                dc.b $20
-                dc.b   0
-                dc.b   9
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b $B4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $42 ; B
-                dc.b $C4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $D4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $E4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b   4
-                dc.b $F8
-                dc.b   1
-                dc.b   0
-                dc.b $20
-                dc.b $14
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $18
-                dc.b $1C
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $1C
-                dc.b $2C ; ,
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $42 ; B
-                dc.b $3C ; <
-                dc.b   9
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b $BC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $36 ; 6
-                dc.b $CC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $DC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $EC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $22 ; "
-                dc.b $FC
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b  $C
-                dc.b $F8
-                dc.b   1
-                dc.b   0
-                dc.b $20
-                dc.b $1C
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2E ; .
-                dc.b $24 ; $
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $18
-                dc.b $34 ; 4
-                dc.b   8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   8
-                dc.b $B0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $26 ; &
-                dc.b $C0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $32 ; 2
-                dc.b $D0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   8
-                dc.b $E0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $22 ; "
-                dc.b $F0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $32 ; 2
-                dc.b $20
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3A ; :
-                dc.b $30 ; 0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $22 ; "
-                dc.b $40 ; @
-                dc.b   0
-                dc.b   4
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $4E ; N
-                dc.b $E0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $32 ; 2
-                dc.b $F0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2E ; .
-                dc.b   0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $10
-                dc.b $10
-                dc.b   0
-                dc.b   2
-                dc.b   4
-                dc.b  $C
-                dc.b   0
-                dc.b $53 ; S
-                dc.b $EC
-                dc.b $F4
-                dc.b   2
-                dc.b   0
-                dc.b $57 ; W
-                dc.b  $C
-                dc.b   2
-                dc.b   4
-                dc.b  $C
-                dc.b   0
-                dc.b $53 ; S
-                dc.b $EC
-                dc.b $F4
-                dc.b   6
-                dc.b   0
-                dc.b $5A ; Z
-                dc.b   8
-                dc.b   2
-                dc.b   4
-                dc.b  $C
-                dc.b   0
-                dc.b $53 ; S
-                dc.b $EC
-                dc.b $F4
-                dc.b   6
-                dc.b   0
-                dc.b $60 
-                dc.b   8
-                dc.b  $D
-                dc.b $E4
-                dc.b  $C
-                dc.b   0
-                dc.b $70 ; p
-                dc.b $F4
-                dc.b $E4
-                dc.b   2
-                dc.b   0
-                dc.b $74 ; t
-                dc.b $14
-                dc.b $EC
-                dc.b   4
-                dc.b   0
-                dc.b $77 ; w
-                dc.b $EC
-                dc.b $F4
-                dc.b   5
-                dc.b   0
-                dc.b $79 ; y
-                dc.b $E4
-                dc.b $14
-                dc.b  $C
-                dc.b $18
-                dc.b $70 ; p
-                dc.b $EC
-                dc.b   4
-                dc.b   2
-                dc.b $18
-                dc.b $74 ; t
-                dc.b $E4
-                dc.b  $C
-                dc.b   4
-                dc.b $18
-                dc.b $77 ; w
-                dc.b   4
-                dc.b $FC
-                dc.b   5
-                dc.b $18
-                dc.b $79 ; y
-                dc.b  $C
-                dc.b $EC
-                dc.b   8
-                dc.b   0
-                dc.b $7D ; }
-                dc.b $FC
-                dc.b $F4
-                dc.b  $C
-                dc.b   0
-                dc.b $7C ; |
-                dc.b $F4
-                dc.b $FC
-                dc.b   8
-                dc.b   0
-                dc.b $7C ; |
-                dc.b $F4
-                dc.b   4
-                dc.b  $C
-                dc.b   0
-                dc.b $7C ; |
-                dc.b $EC
-                dc.b  $C
-                dc.b   8
-                dc.b   0
-                dc.b $7C ; |
-                dc.b $EC
-                dc.b   0
-unk_AA20:       dc.b   0
-                dc.b   4
-                dc.b   0
-                dc.b  $F
-                dc.b   2
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b   0
-                dc.b $B8
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b   8
-                dc.b $D8
-                dc.b   2
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b $14
-                dc.b   8
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b  $C
-                dc.b $28 ; (
-unk_AA3A:       dc.b   0
-                dc.b $12
-                dc.b   0
-                dc.b $3B ; ;
-                dc.b   0
-                dc.b $5A ; Z
-                dc.b   0
-                dc.b $79 ; y
-                dc.b   0
-                dc.b $9D
-                dc.b $FF
-                dc.b $A3
-                dc.b $FF
-                dc.b $82
-                dc.b $FF
-                dc.b $8D
-                dc.b $FF
-                dc.b $98
-                dc.b   8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b $B8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $32 ; 2
-                dc.b $C8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $2E ; .
-                dc.b $D8
-                dc.b $F8
-                dc.b   1
-                dc.b   0
-                dc.b $20
-                dc.b $E8
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   8
-                dc.b $F0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $1C
-                dc.b $10
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $20
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b $30 ; 0
-                dc.b   6
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $36 ; 6
-                dc.b $D0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b   0
-                dc.b $E0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b $F0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $3E ; >
-                dc.b   0
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b $10
-                dc.b $10
-                dc.b $F8
-                dc.b   5
-                dc.b   0
-                dc.b  $C
-                dc.b $20
-                dc.b   6
-                dc.b $F8
-                dc.b  $D
-                dc.b   1
-                dc.b $4A ; J
-                dc.b $B0
-                dc.b $F8
-                dc.b   1
-                dc.b   1
-                dc.b $62 ; b
-                dc.b $D0
-                dc.b $F8
-                dc.b   9
-                dc.b   1
-                dc.b $64 ; d
-                dc.b $18
-                dc.b $F8
-                dc.b  $D
-                dc.b   1
-                dc.b $6A ; j
-                dc.b $30 ; 0
-                dc.b $F7
-                dc.b   4
-                dc.b   0
-                dc.b $6E ; n
-                dc.b $CD
-                dc.b $FF
-                dc.b   4
-                dc.b $18
-                dc.b $6E ; n
-                dc.b $CD
-                dc.b   7
-                dc.b $F8
-                dc.b  $D
-                dc.b   1
-                dc.b $5A ; Z
-                dc.b $B0
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b $66 
-                dc.b $D9
-                dc.b $F8
-                dc.b   1
-                dc.b   1
-                dc.b $4A ; J
-                dc.b $F9
-                dc.b $F7
-                dc.b   4
-                dc.b   0
-                dc.b $6E ; n
-                dc.b $F6
-                dc.b $FF
-                dc.b   4
-                dc.b $18
-                dc.b $6E ; n
-                dc.b $F6
-                dc.b $F8
-                dc.b  $D
-                dc.b $FF
-                dc.b $F0
-                dc.b $28 ; (
-                dc.b $F8
-                dc.b   1
-                dc.b   1
-                dc.b $70 ; p
-                dc.b $48 ; H
-                dc.b   7
-                dc.b $F8
-                dc.b  $D
-                dc.b   1
-                dc.b $52 ; R
-                dc.b $B0
-                dc.b $F8
-                dc.b  $D
-                dc.b   0
-                dc.b $66 
-                dc.b $D9
-                dc.b $F8
-                dc.b   1
-                dc.b   1
-                dc.b $4A ; J
-                dc.b $F9
-                dc.b $F7
-                dc.b   4
-                dc.b   0
-                dc.b $6E ; n
-                dc.b $F6
-                dc.b $FF
-                dc.b   4
-                dc.b $18
-                dc.b $6E ; n
-                dc.b $F6
-                dc.b $F8
-                dc.b  $D
-                dc.b $FF
-                dc.b $F8
-                dc.b $28 ; (
-                dc.b $F8
-                dc.b   1
-                dc.b   1
-                dc.b $70 ; p
-                dc.b $48 ; H
-                dc.b   0
+
+Map_obj34:
+        dc.w Map_obj34_GHZ-Map_obj34, Map_obj34_LZ-Map_obj34
+        dc.w Map_obj34_MZ-Map_obj34, Map_obj34_SLZ-Map_obj34
+        dc.w Map_obj34_SZ-Map_obj34, Map_obj34_CWZ-Map_obj34
+        dc.w Map_obj34_Zone-Map_obj34, Map_obj34_Act1-Map_obj34
+        dc.w Map_obj34_Act2-Map_obj34, Map_obj34_Act3-Map_obj34
+        dc.w Map_obj34_Oval-Map_obj34
+
+Map_obj34_unused: dc.b $0           ; Unknown
+        dc.b $16, $0, $44, $0, $72
+        dc.b $0, $92, $0, $C0, $0
+        dc.b $EE, $1, $18, $1, $2E
+        dc.b $1, $39, $1, $44, $1, $4F
+Map_obj34_GHZ: dc.b $9              ; GREEN HILL
+        dc.b $F8, $5, $0, $18, $B4
+        dc.b $F8, $5, $0, $3A, $C4
+        dc.b $F8, $5, $0, $10, $D4
+        dc.b $F8, $5, $0, $10, $E4
+        dc.b $F8, $5, $0, $2E, $F4
+        dc.b $F8, $5, $0, $1C, $14
+        dc.b $F8, $1, $0, $20, $24
+        dc.b $F8, $5, $0, $26, $2C
+        dc.b $F8, $5, $0, $26, $3C
+Map_obj34_LZ: dc.b $9              ; LABYRINTH
+	dc.b $F8, $5, $0, $26, $BC
+	dc.b $F8, $5, $0, $0, $CC
+	dc.b $F8, $5, $0, $4, $DC
+	dc.b $F8, $5, $0, $4A, $EC
+	dc.b $F8, $5, $0, $3A, $FC
+	dc.b $F8, $1, $0, $20, $C
+	dc.b $F8, $5, $0, $2E, $14
+	dc.b $F8, $5, $0, $42, $24
+	dc.b $F8, $5, $0, $1C, $34
+Map_obj34_MZ: dc.b $6              ; MARBLE
+	dc.b $F8, $5, $0, $2A, $CF
+	dc.b $F8, $5, $0, $0, $E0
+	dc.b $F8, $5, $0, $3A, $F0
+	dc.b $F8, $5, $0, $4, $0
+	dc.b $F8, $5, $0, $26, $10
+	dc.b $F8, $5, $0, $10, $20
+Map_obj34_SLZ: dc.b $9             ; STAR LIGHT
+	dc.b $F8, $5, $0, $3E, $B4
+	dc.b $F8, $5, $0, $42, $C4
+	dc.b $F8, $5, $0, $0, $D4
+	dc.b $F8, $5, $0, $3A, $E4
+	dc.b $F8, $5, $0, $26, $4
+	dc.b $F8, $1, $0, $20, $14
+	dc.b $F8, $5, $0, $18, $1C
+	dc.b $F8, $5, $0, $1C, $2C
+	dc.b $F8, $5, $0, $42, $3C
+Map_obj34_SZ: dc.b $9              ; SPARKLING
+	dc.b $F8, $5, $0, $3E, $BC
+	dc.b $F8, $5, $0, $36, $CC
+	dc.b $F8, $5, $0, $0, $DC
+	dc.b $F8, $5, $0, $3A, $EC
+	dc.b $F8, $5, $0, $22, $FC
+	dc.b $F8, $5, $0, $26, $C
+	dc.b $F8, $1, $0, $20, $1C
+	dc.b $F8, $5, $0, $2E, $24
+	dc.b $F8, $5, $0, $18, $34
+Map_obj34_CWZ: dc.b $8             ; CLOCK WORK
+	dc.b $F8, $5, $0, $8, $B0
+	dc.b $F8, $5, $0, $26, $C0
+	dc.b $F8, $5, $0, $32, $D0
+	dc.b $F8, $5, $0, $8, $E0
+	dc.b $F8, $5, $0, $22, $F0
+	dc.b $F8, $5, $0, $32, $20
+	dc.b $F8, $5, $0, $3A, $30
+	dc.b $F8, $5, $0, $22, $40
+Map_obj34_Zone: dc.b $4            ; ZONE
+	dc.b $F8, $5, $0, $4E, $E0
+	dc.b $F8, $5, $0, $32, $F0
+	dc.b $F8, $5, $0, $2E, $0
+	dc.b $F8, $5, $0, $10, $10
+Map_obj34_Act1: dc.b $2            ; ACT.1
+	dc.b $4, $C, $0, $53, $EC
+	dc.b $F4, $2, $0, $57, $C
+Map_obj34_Act2: dc.b $2            ; ACT.2
+	dc.b $4, $C, $0, $53, $EC
+	dc.b $F4, $6, $0, $5A, $8
+Map_obj34_Act3: dc.b $2            ; ACT.3
+	dc.b $4, $C, $0, $53, $EC
+	dc.b $F4, $6, $0, $60, $8
+Map_obj34_Oval: dc.b $D            ; Oval
+	dc.b $E4, $C, $0, $70, $F4
+	dc.b $E4, $2, $0, $74, $14
+	dc.b $EC, $4, $0, $77, $EC
+	dc.b $F4, $5, $0, $79, $E4
+	dc.b $14, $C, $18, $70, $EC
+	dc.b $4, $2, $18, $74, $E4
+	dc.b $C, $4, $18, $77, $4
+	dc.b $FC, $5, $18, $79, $C
+	dc.b $EC, $8, $0, $7D, $FC
+	dc.b $F4, $C, $0, $7C, $F4
+	dc.b $FC, $8, $0, $7C, $F4
+	dc.b $4, $C, $0, $7C, $EC
+	dc.b $C, $8, $0, $7C, $EC
+	dc.b $0
+	even
+
+Map_obj39:      include "Map/Game Over.asm"
+
+Map_obj3A:	dc.w byte_CBEA-Map_obj3A
+		dc.w byte_CC13-Map_obj3A
+		dc.w byte_CC32-Map_obj3A
+		dc.w byte_CC51-Map_obj3A
+		dc.w byte_CC75-Map_obj3A
+		dc.w Map_obj34_Oval-Map_obj3A
+		dc.w Map_obj34_Act1-Map_obj3A
+		dc.w Map_obj34_Act2-Map_obj3A
+		dc.w Map_obj34_Act3-Map_obj3A
+
+Map_obj3A_unused: dc.b $0
+                  dc.b $12, $0, $3B, $0, $5A
+                  dc.b $0, $79, $0, $9D, $FF
+                  dc.b $A3, $FF, $82, $FF, $8D
+                  dc.b $FF, $98
+
+byte_CBEA:	dc.b 8			; SONIC HAS
+		dc.b $F8, 5, 0,	$3E, $B8
+		dc.b $F8, 5, 0,	$32, $C8
+		dc.b $F8, 5, 0,	$2E, $D8
+		dc.b $F8, 1, 0,	$20, $E8
+		dc.b $F8, 5, 0,	8, $F0
+		dc.b $F8, 5, 0,	$1C, $10
+		dc.b $F8, 5, 0,	0, $20
+		dc.b $F8, 5, 0,	$3E, $30
+byte_CC13:	dc.b 6			; PASSED
+		dc.b $F8, 5, 0,	$36, $D0
+		dc.b $F8, 5, 0,	0, $E0
+		dc.b $F8, 5, 0,	$3E, $F0
+		dc.b $F8, 5, 0,	$3E, 0
+		dc.b $F8, 5, 0,	$10, $10
+		dc.b $F8, 5, 0,	$C, $20
+byte_CC32:	dc.b 6			; SCORE
+		dc.b $F8, $D, 1, $4A, $B0
+		dc.b $F8, 1, 1,	$62, $D0
+		dc.b $F8, 9, 1,	$64, $18
+		dc.b $F8, $D, 1, $6A, $30
+		dc.b $F7, 4, 0,	$6E, $CD
+		dc.b $FF, 4, $18, $6E, $CD
+byte_CC51:	dc.b 7			; TIME BONUS
+		dc.b $F8, $D, 1, $5A, $B0
+		dc.b $F8, $D, 0, $66, $D9
+		dc.b $F8, 1, 1,	$4A, $F9
+		dc.b $F7, 4, 0,	$6E, $F6
+		dc.b $FF, 4, $18, $6E, $F6
+		dc.b $F8, $D, $FF, $F0,	$28
+		dc.b $F8, 1, 1,	$70, $48
+byte_CC75:	dc.b 7			; RING BONUS
+		dc.b $F8, $D, 1, $52, $B0
+		dc.b $F8, $D, 0, $66, $D9
+		dc.b $F8, 1, 1,	$4A, $F9
+		dc.b $F7, 4, 0,	$6E, $F6
+		dc.b $FF, 4, $18, $6E, $F6
+		dc.b $F8, $D, $FF, $F8,	$28
+		dc.b $F8, 1, 1,	$70, $48
+		dc.b $0
+		even
 ; ---------------------------------------------------------------------------
 
 Obj36:
@@ -15179,7 +13901,7 @@ byte_AB0E:      dc.b 0, $14
 
 entry_ab1a:
                 addq.b  #2,$24(a0)
-                move.l  #unk_ACA4,4(a0)
+                move.l  #Map_obj36,4(a0)
                 move.w  #$51B,2(a0)
                 ori.b   #4,1(a0)
                 move.b  #4,$19(a0)
@@ -15331,7 +14053,7 @@ locret_ACA2:
 ; End of function sub_AC42
 
 ; ---------------------------------------------------------------------------
-unk_ACA4:       include "Map/Spikes.asm"
+Map_obj36:       include "Map/Spikes.asm"
 ; ---------------------------------------------------------------------------
 
 Obj3B:
@@ -16740,7 +15462,7 @@ ObjMotobug_Index:dc.w entry_B898-*
 ; ---------------------------------------------------------------------------
 
 entry_B898:
-                move.l  #unk_BA08,4(a0)
+                move.l  #Map_Motobug,4(a0)
                 move.w  #$4F0,2(a0)
                 move.b  #4,1(a0)
                 move.b  #4,$19(a0)
@@ -16889,7 +15611,7 @@ unk_B9EA:       dc.b   0
                 dc.b $FC
                 dc.b   0
 
-unk_BA08:       include "Map/Motobug.asm"
+Map_Motobug:    include "Map/Motobug.asm"
 ; ---------------------------------------------------------------------------
 
 ObjSprings:
@@ -19022,10 +17744,7 @@ ObjYadrin_Stop:
                 move.b  #0,$1C(a0)
                 rts
 ; ---------------------------------------------------------------------------
-Anim_Yadrin:    dc.w byte_D40C-*
-                dc.w byte_D410-Anim_Yadrin
-byte_D40C:      dc.b 7, 0, $FF, 0
-byte_D410:      dc.b 7, 0, 3, 1, 4, 0, 3, 2, 5, $FF
+Anim_Yadrin:    include "Ani/Yadrin.asm"
 
 Map_Yadrin:     include "Map/Yadrin.asm"
 ; ---------------------------------------------------------------------------
@@ -19277,7 +17996,7 @@ index_d704:     dc.w entry_D708-*
 
 entry_D708:
                 addq.b  #2,$24(a0)
-                move.l  #unk_D88C,4(a0)
+                move.l  #Map_BatBrain,4(a0)
                 move.w  #$84B8,2(a0)
                 move.b  #4,1(a0)
                 move.b  #$C,$16(a0)
@@ -19437,7 +18156,7 @@ unk_D878:       dc.b   0
                 dc.b   2
                 dc.b $FF
 
-unk_D88C:       include "Map/BatBrain.asm"
+Map_BatBrain:       include "Map/BatBrain.asm"
 ; ---------------------------------------------------------------------------
 
 Obj56:
@@ -21071,7 +19790,7 @@ index_e6b0:     dc.w entry_E6B6-*
 
 entry_E6B6:
                 addq.b  #2,$24(a0)
-                move.l  #unk_E7CE,4(a0)
+                move.l  #Map_Obj5E,4(a0)
                 move.w  #$374,2(a0)
                 ori.b   #4,1(a0)
                 move.b  #4,$19(a0)
@@ -21235,72 +19954,8 @@ unk_E79E:       dc.b $15
                 dc.b $15
                 dc.b $15
                 dc.b $15
-unk_E7CE:       dc.b   0
-                dc.b   8
-                dc.b   0
-                dc.b $2C ; ,
-                dc.b   0
-                dc.b   8
-                dc.b   0
-                dc.b $2C ; ,
-                dc.b   7
-                dc.b $D4
-                dc.b   6
-                dc.b   0
-                dc.b   0
-                dc.b $D3
-                dc.b $DC
-                dc.b   6
-                dc.b   0
-                dc.b   6
-                dc.b $E3
-                dc.b $E4
-                dc.b   4
-                dc.b   0
-                dc.b  $C
-                dc.b $F3
-                dc.b $EC
-                dc.b  $D
-                dc.b   0
-                dc.b  $E
-                dc.b $F3
-                dc.b $FC
-                dc.b   8
-                dc.b   0
-                dc.b $16
-                dc.b $FB
-                dc.b $F4
-                dc.b   6
-                dc.b   0
-                dc.b   6
-                dc.b $13
-                dc.b $FC
-                dc.b   5
-                dc.b   0
-                dc.b $19
-                dc.b $23 ; #
-                dc.b   4
-                dc.b $E6
-                dc.b  $A
-                dc.b   0
-                dc.b $1D
-                dc.b $D0
-                dc.b $E6
-                dc.b  $A
-                dc.b   0
-                dc.b $23 ; #
-                dc.b $E8
-                dc.b $E6
-                dc.b  $A
-                dc.b   8
-                dc.b $23 ; #
-                dc.b   0
-                dc.b $E6
-                dc.b  $A
-                dc.b   8
-                dc.b $1D
-                dc.b $18
-                dc.b   0
+
+Map_Obj5E:      include "Map/Seesaw.asm"
 
 ; ===========================================================================
 ; ----------------------------------------------------------------------------
@@ -25889,62 +24544,8 @@ loc_10BC8:
 ; End of function sub_10B70
 
 ; ---------------------------------------------------------------------------
-SS_MapIndex:    dc.l Map_SSWalls
-                dc.w $142
-                dc.l Map_SSWalls
-                dc.w $2142
-                dc.l Map_SSWalls
-                dc.w $4142
-                dc.l Map_SSWalls
-                dc.w $6142
-                dc.l Map_SSWalls
-                dc.w $142
-                dc.l Map_SSWalls
-                dc.w $142
-                dc.l Map_SSWalls
-                dc.w $142
-                dc.l Map_SSWalls
-                dc.w $142
-                dc.l Map_SSWalls
-                dc.w $2142
-                dc.l Map_SSWalls
-                dc.w $2142
-                dc.l Map_SSWalls
-                dc.w $2142
-                dc.l Map_SSWalls
-                dc.w $2142
-                dc.l Map_SSWalls
-                dc.w $4142
-                dc.l Map_SSWalls
-                dc.w $4142
-                dc.l Map_SSWalls
-                dc.w $4142
-                dc.l Map_SSWalls
-                dc.w $4142
-                dc.l Map_Signpost_Sparkle
-                dc.w $27B2
-                dc.l unk_C6C2
-                dc.w $23B
-                dc.l unk_10C78
-                dc.w $251
-                dc.l unk_10C88
-                dc.w $251
-                dc.l unk_10C78
-                dc.w $263
-                dc.l unk_10C88
-                dc.w $263
-                dc.l Map_Signpost_Sparkle+$4000000
-                dc.w $27B2
-                dc.l Map_Signpost_Sparkle+$5000000
-                dc.w $27B2
-                dc.l Map_Signpost_Sparkle+$6000000
-                dc.w $27B2
-                dc.l Map_Signpost_Sparkle+$7000000
-                dc.w $27B2
-                dc.l unk_C6C2+$1000000
-                dc.w $23B
-                dc.l unk_C6C2+$2000000
-                dc.w $23B
+SS_MapIndex:    include "_inc/Special Stage Mappings Index.asm"
+
 unk_10C78:      dc.b   0
                 dc.b   4
                 dc.b   0
@@ -25961,6 +24562,7 @@ unk_10C78:      dc.b   0
                 dc.b $20
                 dc.b   0
                 dc.b $F4
+
 unk_10C88:      dc.b   0
                 dc.b   4
                 dc.b   0
@@ -26010,7 +24612,6 @@ unk_10C88:      dc.b   0
                 dc.b $4E ; N
                 dc.b $75 ; u
 ; ---------------------------------------------------------------------------
-; ObjSpecialSonic:
 Obj09:
                 moveq   #0,d0
                 move.b  $24(a0),d0
@@ -27732,13 +26333,13 @@ Pattern_Load_Cues: include "_inc/Pattern Load Cues.asm"
                 if Padding
                 dcb.b $18000-*,$FF ; Padding
                 endif
-byte_18000:     incbin "Art/Nemesis/UnusedText.bin"
+Unused_Text:     incbin "Art/Nemesis/UnusedText.bin"
                 even
 Nem_Sega:       incbin "Art/Nemesis/Sega.bin"
                 even
 Eni_Sega:       incbin "Map/Eni/Sega.bin"
                 even
-byte_18A62:     incbin "Map/Eni/Title.bin"
+Eni_Title:      incbin "Map/Eni/Title.bin"
                 even
 Nem_Title:      incbin "Art/Nemesis/Title.bin"
                 even
@@ -27927,13 +26528,13 @@ Nem_BossItems:  incbin "Art/Nemesis/BossItems.bin"
                 even
 Nem_Capsule:    incbin "Art/Nemesis/Capsule.bin"
                 even
-Demo_SS:        include "Misc/DemoSS.asm"
-
+Demo_SS:        incbin "Misc/DemoSS.bin"
+                even
 Demo_GHZ:       incbin "Misc/DemoGHZ.bin"
                 even
-Demo_MZ:        include "Misc/DemoMZ.asm"
-
-Demo_SZ:        include "Misc/DemoSZ.asm"
+Demo_MZ:        incbin "Misc/DemoMZ.bin"
+                even
+Demo_SZ:        incbin "Misc/DemoSZ.bin"
                 if Padding
                 dcb.b $63000-*,$FF
                 endif
@@ -27942,16 +26543,16 @@ Map_SSWalls:    include "Map/SSWalls.asm"
 Nem_SSWalls:    incbin "Art/Nemesis/SSWalls.bin"
                 even
 Eni_SSBg1:      incbin "Map/Eni/SSBG1.bin"
-
+                even
 Nem_SSBirdFish: incbin "Art/Nemesis/SSBirdFish.bin"
                 even
-Eni_SSBg2:      include "Map/Eni/SSBG2.asm"
-
+Eni_SSBg2:      incbin "Map/Eni/SSBG2.bin"
+                even
 Nem_SSCloudBubble:incbin "Art/Nemesis/SSCloudBubble.bin"
                 even
 Nem_SSGoal:     incbin "Art/Nemesis/SSGoal.bin"
                 even
-byte_6505E:     incbin "Art/Nemesis/SSRBlock.bin"
+Nem_SSR:        incbin "Art/Nemesis/SSRBlock.bin"
                 even
 Nem_SSSkull:    incbin "Art/Nemesis/SSSkull.bin"
                 even
@@ -28272,7 +26873,7 @@ ObjPos_CWZ3:    incbin "Level/Clock Work Zone/ObjPos3.bin"
                 even
 ObjPos_Null:    dc.b $FF, $FF, 0, 0, 0, 0
                 if Padding
-                 dcb.b $74000-*,$FF ; Padding
+                dcb.b $74000-*,$FF ; Padding
                 endif
 
 ; ---------------------------------------------------------------------------
@@ -28281,7 +26882,7 @@ Go_SpecSoundIndex:dc.l SpecSoundIndex
 Go_MusicIndex:  dc.l MusicIndex
 Go_SoundIndex:  dc.l SoundIndex
 off_74010:      dc.l byte_74110
-Go_PSGIndex:    dc.l PSG_Index
+Go_PSGIndex:    dc.l PSG_Index                                    ; sub_75032
                 dc.l $A0
                 dc.l UpdateMusic
 Go_SpeedUpIndex:dc.l SpeedUpIndex
@@ -28843,15 +27444,15 @@ locret_745AE:
 off_745B0:      dc.l unk_745BC
                 dc.l unk_745BE
                 dc.l unk_745C1
-unk_745BC:      dc.b $40 ; @
+unk_745BC:      dc.b $40
                 dc.b $80
-unk_745BE:      dc.b $40 ; @
+unk_745BE:      dc.b $40
                 dc.b $C0
                 dc.b $80
 unk_745C1:      dc.b $C0
                 dc.b $80
                 dc.b $C0
-                dc.b $40 ; @
+                dc.b $40
                 dc.b   0
 ; ---------------------------------------------------------------------------
 ; START OF FUNCTION CHUNK FOR UpdateMusic
@@ -29010,7 +27611,6 @@ loc_7471C:
                 clr.b   (a0)+
                 rts
 ; ---------------------------------------------------------------------------
-; loc_74730:
 PlayMusic:
                 cmpi.b  #$88,d7
                 bne.s   loc_7477E
@@ -29865,13 +28465,8 @@ loc_74E90:
 ; End of function WriteFMII
 
 ; ---------------------------------------------------------------------------
-FMFrequencies:  dc.w $25E, $284, $2AB, $2D3, $2FE, $32D, $35C, $38F, $3C5, $3FF, $43C, $47C, $A5E, $A84, $AAB, $AD3
-                dc.w $AFE, $B2D, $B5C, $B8F, $BC5, $BFF, $C3C, $C7C, $125E, $1284, $12AB, $12D3, $12FE, $132D, $135C, $138F
-                dc.w $13C5, $13FF, $143C, $147C, $1A5E, $1A84, $1AAB, $1AD3, $1AFE, $1B2D, $1B5C, $1B8F, $1BC5, $1BFF, $1C3C, $1C7C
-                dc.w $225E, $2284, $22AB, $22D3, $22FE, $232D, $235C, $238F, $23C5, $23FF, $243C, $247C, $2A5E, $2A84, $2AAB, $2AD3
-                dc.w $2AFE, $2B2D, $2B5C, $2B8F, $2BC5, $2BFF, $2C3C, $2C7C, $325E, $3284, $32AB, $32D3, $32FE, $332D, $335C, $338F
-                dc.w $33C5, $33FF, $343C, $347C, $3A5E, $3A84, $3AAB, $3AD3, $3AFE, $3B2D, $3B5C, $3B8F, $3BC5, $3BFF, $3C3C, $3C7C
-
+FMFrequencies:  incbin "Sound/Misc/FMFrequencies.bin"
+                even
 ; =============== S U B R O U T I N E =======================================
 
 
@@ -30108,12 +28703,8 @@ PSGSilenceAll:
 ; End of function PSGSilenceAll
 
 ; ---------------------------------------------------------------------------
-PSGFrequencies: dc.w $356, $326, $2F9, $2CE, $2A5, $280, $25C, $23A, $21A, $1FB, $1DF, $1C4, $1AB, $193, $17D, $167
-                dc.w $153, $140, $12E, $11D, $10D, $FE, $EF, $E2, $D6, $C9, $BE, $B4, $A9, $A0, $97, $8F
-                dc.w $87, $7F, $78, $71, $6B, $65, $5F, $5A, $55, $50, $4B, $47, $43, $40, $3C, $39
-                dc.w $36, $33, $30, $2D, $2B, $28, $26, $24, $22, $20, $1F, $1D, $1B, $1A, $18, $17
-                dc.w $16, $15, $13, $12, $11, 0
-
+PSGFrequencies: incbin "Sound/Misc/PSGFrequencies.bin"
+                even
 ; =============== S U B R O U T I N E =======================================
 
 
@@ -30470,7 +29061,7 @@ locret_75454:
 ; End of function sub_753F8
 
 ; ---------------------------------------------------------------------------
-byte_75456:     dc.b 8
+byte_75456:     dc.b   8
                 dc.b   8
                 dc.b   8
                 dc.b   8
