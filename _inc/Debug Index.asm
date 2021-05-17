@@ -15,13 +15,13 @@ Debug_GHZ:      dc.w $D
                 dc.b 0, 0, 4, $44
                 dc.l unk_8C4E+$2B000000
                 dc.b 0, 0, 4, $7B
-                dc.l unk_ACA4+$36000000
+                dc.l Map_obj36+$36000000
                 dc.b 0, 0, 5, $1B
                 dc.l Map_Platform+$18000000
                 dc.b 0, 0, $40, 0
                 dc.l unk_ADCA+$3B000000
                 dc.b 0, 0, $63, $D0
-                dc.l unk_BA08+$40000000
+                dc.l Map_Motobug+$40000000
                 dc.b 0, 0, 4, $F0
                 dc.l unk_BCCA+$41000000
                 dc.b 0, 0, 5, $23
@@ -45,7 +45,7 @@ Debug_MZ:       dc.w $11
                 dc.b 0, 0, 6, $80
                 dc.l unk_7AF0+$22000000
                 dc.b 0, 0, 4, $44
-                dc.l unk_ACA4+$36000000
+                dc.l Map_obj36+$36000000
                 dc.b 0, 0, 5, $1B
                 dc.l unk_BCCA+$41000000
                 dc.b 0, 0, 5, $23
@@ -71,7 +71,7 @@ Debug_MZ:       dc.w $11
                 dc.b 0, 0, $62, $B8
                 dc.l unk_CDA8+$54000000
                 dc.b 0, 0, $86, $80
-                dc.l unk_D88C+$55000000
+                dc.l Map_BatBrain+$55000000
                 dc.b 0, 0, $24, $B8
 Debug_SLZ:      dc.w $D
                 dc.l Map_Signpost_Sparkle+$25000000
@@ -90,7 +90,7 @@ Debug_SLZ:      dc.w $D
                 dc.b 0, 0, $44, $80
                 dc.l unk_E672+$5D000000
                 dc.b 0, 0, $43, $A0
-                dc.l unk_E7CE+$5E000000
+                dc.l Map_Obj5E+$5E000000
                 dc.b 0, 0, 3, $74
                 dc.l unk_BCCA+$41000000
                 dc.b 0, 0, 5, $23
@@ -105,7 +105,7 @@ Debug_SZ:       dc.w $D
                 dc.b 0, 0, $27, $B2
                 dc.l Map_Monitor+$26000000
                 dc.b 0, 0, 6, $80
-                dc.l unk_ACA4+$36000000
+                dc.l Map_obj36+$36000000
                 dc.b 0, 0, 5, $1B
                 dc.l unk_BCCA+$41000000
                 dc.b 0, 0, 5, $23
@@ -137,9 +137,9 @@ Debug_CWZ:      dc.w 3
 ;Unused
                 dc.l Map_BallHog+$1E000000
                 dc.b 0, 0, $24, 0
-                dc.l unk_8CBA+$2C000000
+                dc.l Map_Jaws+$2C000000
                 dc.b 0, 0, 4, $7B
-                dc.l unk_8E64+$2D000000
+                dc.l Map_Burrobot+$2D000000
                 dc.b 0, 0, $24, $7B
 MainLoadBlocks: dc.l Nem_GHZ2+$4000000
                 dc.l Blk16_GHZ+$5000000
