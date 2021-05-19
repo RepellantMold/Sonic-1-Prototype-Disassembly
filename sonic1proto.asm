@@ -11811,7 +11811,7 @@ loc_9416:
 
 loc_941C:
                 move.b  (a2)+,$24(a1)
-                move.b  #$30,0(a1) 
+                move.b  #$30,0(a1)
                 move.w  8(a0),8(a1)
                 move.b  (a2)+,d0
                 ext.w   d0
@@ -14807,7 +14807,7 @@ loc_B3AC:
 
 loc_B3D6:
                 move.b  #8,$24(a1)
-                move.l  #$5E7A,4(a1)
+                move.l  #Map_RollingBall,4(a1)
                 move.w  #$43AA,2(a1)
                 move.b  #1,$1A(a1)
                 move.b  #5,$19(a1)
